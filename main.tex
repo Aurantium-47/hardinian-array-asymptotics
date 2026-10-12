@@ -1,0 +1,360 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\title{Two asymptotic formulas for square Hardinian arrays}
+\author{}
+\date{October 13, 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove that the numbers of square Hardinian arrays with parameters
+$r=2$ and $r=3$ satisfy
+$H_2(n,n)\sim16^n/(324\pi n)$ and
+$H_3(n,n)\sim64^n/(78732\pi n^3)$, respectively.
+These are two of the asymptotic formulas recorded as conjectures by Dougherty-Bliss
+and Kauers. Starting from their complementary-minor counting identity,
+we obtain exact sums of squares of binomial sums. A uniform local
+expansion, together with a geometric tail bound, reduces the leading
+constants to two small moment determinants. The argument treats fixed
+$r=2,3$ as $n\to\infty$ and does not use a conjectured recurrence.
+\end{abstract}
+
+\section{Statement and source identity}
+
+Following Dougherty-Bliss and Kauers~\cite{dk}, let $H_r(n,n)$ be the
+number of arrays $(a_{i,j})_{1\le i,j\le n}$ of nonnegative integers such
+that
+\begin{enumerate}
+\item $a_{1,1}=0$ and $a_{n,n}=n-r-1$;
+\item every step one position to the right, down, or diagonally down and
+right increases the entry by either $0$ or $1$;
+\item $|a_{i,j}-(\max(i,j)-1)|\le r$ for all $i,j$.
+\end{enumerate}
+The step condition is imposed whenever both positions belong to the
+array. We consider $r\in\{2,3\}$ fixed.
+
+\begin{theorem}\label{thm:main}
+As $n\to\infty$ through the positive integers,
+\[
+ H_2(n,n)\sim\frac{16^n}{324\pi n},\qquad
+ H_3(n,n)\sim\frac{64^n}{78732\pi n^3}.
+\]
+\end{theorem}
+
+The two formulas occur in the conjectural asymptotic table on page~12
+of the published version of~\cite{dk}. OEIS A253217 credits the $r=2$
+asymptotic conjecture to Vaclav Kotesovec on March 2, 2023~\cite{oeis2}.
+Our starting point is the
+counting identity displayed in the proof of its Theorem~6, on page~9;
+we use the identity itself, rather than its consequence of
+D-finiteness. Put $N=n-2$ and let
+\[
+ M=\left[\binom{i+j}{i}\right]_{0\le i,j\le N}.
+\]
+For $n\ge r+1$, that identity reads
+\begin{equation}\label{eq:source}
+ H_r(n,n)=\sum_{\substack{I,J\subseteq\{0,\ldots,N\}\\|I|=|J|=r}}
+              \det M_{I^c,J^c}.
+\end{equation}
+Rows and columns of every submatrix are placed in increasing order;
+complements are taken in $\{0,\ldots,N\}$ and the empty determinant is
+$1$. Thus the matrix has $n-1$ rows and columns, and exactly $r$ of each
+are deleted. In particular, each subset occurs once, with no factorial
+factor. At $n=r+1$, both the array definition and~\eqref{eq:source}
+give $1$.
+
+We derive the theorem from~\eqref{eq:source}. We make no claim here
+about the asymptotic formulas for general $r$, or about completion of
+an exhaustive priority search.
+
+\section{A sum of squares}
+
+Let $P_{u,i}=\binom ui$ for $0\le u,i\le N$, with a binomial
+coefficient equal to zero outside its usual range. The Vandermonde
+identity gives $M=PP^T$. The matrix $P$ is unit lower triangular, and
+its inverse has entries
+\[
+ (P^{-1})_{u,i}=(-1)^{u+i}\binom ui.
+\]
+Writing $E=\operatorname{diag}((-1)^0,\ldots,(-1)^N)$ and $B=P^TP$,
+we therefore have $\det M=1$ and $M^{-1}=EBE$.
+Jacobi's complementary-minor identity now gives
+\[
+ \det M_{I^c,J^c}
+ =(-1)^{\sum I+\sum J}\det(M^{-1})_{J,I}
+ =\det B_{J,I}.
+\]
+The last equality uses the identical sign supplied by the two diagonal
+matrices $E$. Applying Cauchy--Binet to $B=P^TP$ and summing over $I,J$
+in~\eqref{eq:source} yields
+\begin{equation}\label{eq:squares}
+ H_r(n,n)=\sum_{0\le u_1<\cdots<u_r\le N}W_r(u_1,\ldots,u_r)^2,
+\end{equation}
+where
+\begin{equation}\label{eq:W}
+ W_r(u_1,\ldots,u_r)=
+ \sum_{0\le i_1<\cdots<i_r\le N}
+ \det\left[\binom{u_a}{i_b}\right]_{a,b=1}^r.
+\end{equation}
+Indeed, for each row set $U$, the sums over $I$ and $J$ are the same
+sum of minors, so their product is its square. All sums in this step
+are finite.
+
+For independent random variables $X_a\sim\operatorname{Bin}(u_a,1/2)$,
+define
+\[
+ w_r(u_1,\ldots,u_r)=2^{-\sum_a u_a}W_r(u_1,\ldots,u_r).
+\]
+Expanding the determinant in~\eqref{eq:W} and sorting the distinct
+values of the $X_a$ shows that
+\begin{equation}\label{eq:prob}
+ w_r(u_1,\ldots,u_r)
+ =\E\!\left[\sgn\prod_{a<b}(X_b-X_a)\right].
+\end{equation}
+For distinct values, the determinant sign is exactly the sign of the
+sorting permutation. A tie contributes zero on the right and is
+absent from the strictly increasing column sets on the left. Here
+$\sgn(0)=0$. In particular, we have the global bound
+\begin{equation}\label{eq:globalbound}
+ |w_r(u_1,\ldots,u_r)|\le1.
+\end{equation}
+
+\section{Exact formulas for two and three rows}
+
+For integers $0\le u<v$, set
+\begin{equation}\label{eq:D}
+ D(u,v)=\sum_{j=u}^{v-1}\binom{u+v}{j},\qquad
+ Q(u,v)=2^{-u-v}D(u,v).
+\end{equation}
+If $X\sim\operatorname{Bin}(u,1/2)$ and
+$Y\sim\operatorname{Bin}(v,1/2)$ are independent, then $Y-X$ has
+the distribution of $Z-u$ with $Z\sim\operatorname{Bin}(u+v,1/2)$.
+By symmetry, $\Prb(Z>u)=\Prb(Z<v)$, and hence
+\[
+ \Prb(X<Y)-\Prb(X>Y)=\Prb(u\le Z<v)=Q(u,v).
+\]
+It follows from~\eqref{eq:prob} that $W_2(u,v)=D(u,v)$ and
+\begin{equation}\label{eq:H2}
+ H_2(n,n)=\sum_{0\le u<v\le N}D(u,v)^2.
+\end{equation}
+
+For any three real numbers, including ties, the identity
+\begin{equation}\label{eq:sign3}
+ \sgn((y-x)(z-x)(z-y))
+ =\sgn(y-x)-\sgn(z-x)+\sgn(z-y)
+\end{equation}
+follows by checking their relative order. Taking expectations gives
+\begin{equation}\label{eq:w3}
+ w_3(u,v,w)=Q(u,v)-Q(u,w)+Q(v,w)
+ \quad(0\le u<v<w).
+\end{equation}
+Thus, if
+\[
+ A(u,v,w)=2^wD(u,v)-2^vD(u,w)+2^uD(v,w),
+\]
+then $W_3(u,v,w)=A(u,v,w)$ and
+\begin{equation}\label{eq:H3}
+ H_3(n,n)=\sum_{0\le u<v<w\le N}A(u,v,w)^2.
+\end{equation}
+Equations~\eqref{eq:H2} and~\eqref{eq:H3} are exact integer identities.
+
+\section{A uniform local expansion}
+
+Write $u=N-a$, $v=N-b$, where $0\le b<a\le L$ and
+$L=O(\log N)$, and put $d=a-b$, $s=a+b$.
+
+\begin{lemma}\label{lem:local}
+Uniformly for these offsets,
+\begin{equation}\label{eq:local}
+ Q(N-a,N-b)=\frac{d}{\sqrt{\pi N}}
+ \left[1+\frac{s/4-d^2/12-7/24}{N}\right]
+ +O\left(\frac{(1+L)^5}{N^{5/2}}\right).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $m=2N-s$. The summation indices in~\eqref{eq:D} can be written
+$j=m/2+t$, with $t=-d/2,-d/2+1,\ldots,d/2-1$.
+The numbers $t$ may be half-integers, but $j$ and $m-j$ are integers.
+The Stirling expansion with remainder gives, uniformly here,
+\begin{equation}\label{eq:mass}
+ 2^{-m}\binom m{m/2+t}
+ =\sqrt{\frac2{\pi m}}
+ \left[1-\frac{2t^2+1/4}{m}
+ +O\left(\frac{(1+|t|)^4}{m^2}\right)\right].
+\end{equation}
+For completeness, set $x=2t/m$. Applying the logarithmic Stirling
+formula to $m!$, $(m/2+t)!$, and $(m/2-t)!$ gives
+\begin{align*}
+ \log\!\left(2^{-m}\binom m{m/2+t}\sqrt{\frac{\pi m}{2}}\right)
+ ={}&-\frac m2\bigl[(1+x)\log(1+x)+(1-x)\log(1-x)\bigr]\\
+ &-\frac12\log(1-x^2)+\frac1{12m}
+ -\frac1{12(m/2+t)}-\frac1{12(m/2-t)}+O(m^{-3}).
+\end{align*}
+Since $|t|=O(\log N)$ and $m\asymp N$, the three factorial arguments
+are uniformly comparable to $N$, and eventually $|x|\le1/2$.
+Taylor expansion therefore makes the last display equal to
+\[
+ -\frac{2t^2+1/4}{m}
+ +O\left(\frac{t^2}{m^2}+\frac{t^4+1}{m^3}\right).
+\]
+Exponentiating proves~\eqref{eq:mass}, with an error constant uniform
+over the logarithmic window.
+Substituting $m=2N-s$ into~\eqref{eq:mass} gives each mass as
+\[
+ \frac1{\sqrt{\pi N}}
+ \left[1+\frac{s/4-t^2-1/8}{N}
+ +O\left(\frac{(1+L)^4}{N^2}\right)\right].
+\]
+Finally,
+\[
+ \sum_{k=0}^{d-1}(k-d/2)^2=\frac{d(d^2+2)}{12}.
+\]
+There are $d\le L$ terms, so summing yields~\eqref{eq:local}.
+\end{proof}
+
+For $r=2$, the lemma immediately implies
+\begin{equation}\label{eq:w2local}
+ w_2(N-a,N-b)=\frac{a-b}{\sqrt{\pi N}}(1+o(1))
+\end{equation}
+uniformly in the window. For $r=3$, take $a>b>c\ge0$ and apply the
+lemma to the three terms in~\eqref{eq:w3}. The coefficients of
+$N^{-1/2}$ cancel because
+$(a-b)-(a-c)+(b-c)=0$. In the next coefficient, the terms involving
+$ds=a^2-b^2$ and the constant multiple of $d$ also cancel. Since
+\[
+ (a-b)^3-(a-c)^3+(b-c)^3
+ =-3(a-b)(a-c)(b-c),
+\]
+we obtain, with $\Delta(a,b,c)=(a-b)(a-c)(b-c)$,
+\begin{equation}\label{eq:w3local}
+ w_3(N-a,N-b,N-c)=
+ \frac{\Delta(a,b,c)}{4\sqrt\pi\,N^{3/2}}
+ +O\left(\frac{(1+L)^5}{N^{5/2}}\right).
+\end{equation}
+For distinct integer offsets $\Delta(a,b,c)\ge2$, so the relative
+error in~\eqref{eq:w3local} tends uniformly to zero. The same is true
+in~\eqref{eq:w2local}, since $a-b\ge1$. The next-order term in the
+local binomial expansion is essential in the three-row case.
+
+\section{Tail control and evaluation of the constants}
+
+Let $r\in\{2,3\}$ and $R=\binom r2$. Replacing the row indices in
+\eqref{eq:squares} by decreasing offsets gives
+\begin{equation}\label{eq:normalized}
+ \frac{N^R H_r(n,n)}{2^{2rN}}
+ =\sum_{N\ge a_1>\cdots>a_r\ge0}
+ 4^{-\sum_i a_i}N^R
+ w_r(N-a_1,\ldots,N-a_r)^2.
+\end{equation}
+Choose $L=\lceil6\log_4N\rceil$. By~\eqref{eq:globalbound}, the
+part of the sum with $a_1>L$ is at most
+\begin{align}
+ N^R\sum_{\max_i a_i>L}4^{-\sum_i a_i}
+ &\le N^R r\left(\sum_{k=L+1}^\infty4^{-k}\right)
+                \left(\sum_{k=0}^\infty4^{-k}\right)^{r-1}\notag\\
+ &=\frac r3\left(\frac43\right)^{r-1}N^R4^{-L}
+ =O(N^{R-6})=o(1).\label{eq:tail}
+\end{align}
+For this upper bound we have enlarged the sum to all nonnegative
+integer tuples.
+
+Inside the window,~\eqref{eq:w2local} and~\eqref{eq:w3local} have
+uniform relative errors. A squared Vandermonde is a fixed polynomial
+in the offsets, so its sum against $4^{-\sum_i a_i}$ converges.
+Consequently the error in the weighted window sum tends to zero,
+while the truncated main sum tends to the full convergent sum.
+Combining this fact with~\eqref{eq:tail} proves
+\begin{equation}\label{eq:limits}
+ H_2(n,n)\sim\frac{16^N}{\pi N}Z_2(1/4),\qquad
+ H_3(n,n)\sim\frac{64^N}{16\pi N^3}Z_3(1/4),
+\end{equation}
+where, for $0<q<1$,
+\[
+ Z_r(q)=\sum_{0\le b_1<\cdots<b_r}
+       \prod_{i<j}(b_j-b_i)^2q^{b_1+\cdots+b_r}.
+\]
+This argument explicitly bounds the whole tail, rather than
+interchanging a pointwise limit and an unbounded sum.
+
+Put $\mu_k(q)=\sum_{b\ge0}b^kq^b$, with $b^0=1$ also for $b=0$.
+Equivalently,
+\[
+ \mu_k(q)=\left(q\frac{d}{dq}\right)^k\frac1{1-q}.
+\]
+Cauchy--Binet for the weighted Vandermonde matrix, first with bounded
+column indices and then in the limit, gives
+\[
+ Z_r(q)=\det[\mu_{i+j}(q)]_{0\le i,j<r}.
+\]
+Every moment converges for $0<q<1$, and a finite determinant is a
+polynomial in its entries, which justifies that limit. Direct
+differentiation and the two small determinants give
+\[
+ Z_2(q)=\frac q{(1-q)^4},\qquad
+ Z_3(q)=\frac{4q^3}{(1-q)^9}.
+\]
+In particular,
+\[
+ Z_2(1/4)=\frac{64}{81},\qquad
+ Z_3(1/4)=\frac{16384}{19683}.
+\]
+Finally $N=n-2$ and $N/n\to1$, while
+\[
+ \frac{64/81}{16^2}=\frac1{324},\qquad
+ \frac{16384/19683}{16\cdot64^2}=\frac1{78732}.
+\]
+Substitution into~\eqref{eq:limits} proves Theorem~\ref{thm:main}.
+\qed
+
+\section{Reproducible finite checks}
+
+The accompanying script \texttt{hardinian.py} evaluates the exact
+integer formulas through $n=201$. It also enumerates arrays directly
+from the definition for $1\le n\le6$ and evaluates the complementary
+minors independently for $3\le n\le8$, in both cases for $r=2,3$.
+All comparisons pass. The computed values agree with the 37 supplied
+terms of OEIS A253217 and the first 24 supplied terms of A252998,
+together with its entries at $n=100,101$~\cite{oeis2,oeis3}.
+The script includes exact symbolic checks of $Z_2$ and $Z_3$ when
+SymPy is installed. The accompanying result file records an actual
+successful run. These checks help detect indexing and constant errors;
+the limits for unbounded $n$ are proved in Sections~4--5.
+
+\paragraph{AI assistance and verification status.}
+This research was completed with AI assistance. The mathematical
+argument, source references, and reproducible checks are provided for
+evaluation. This version does not claim proof-assistant verification
+or external peer review.
+
+\begin{thebibliography}{9}
+\bibitem{dk}
+R.~Dougherty-Bliss and M.~Kauers,
+\emph{Hardinian Arrays},
+Electronic Journal of Combinatorics \textbf{31}(2) (2024), P2.9.
+\href{https://doi.org/10.37236/12358}{doi:10.37236/12358}.
+
+\bibitem{oeis2}
+The OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences},
+\href{https://oeis.org/A253217}{A253217};
+\href{https://oeis.org/A253217/b253217.txt}{table of values}.
+Accessed October 13, 2026.
+
+\bibitem{oeis3}
+The OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences},
+\href{https://oeis.org/A252998}{A252998};
+\href{https://oeis.org/A252998/b252998.txt}{table of values}.
+Accessed October 13, 2026.
+\end{thebibliography}
+\end{document}
