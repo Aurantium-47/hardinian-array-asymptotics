@@ -1,0 +1,87 @@
+{
+  "title": "Diagonal asymptotics of square Hardinian arrays: every fixed parameter",
+  "version": "0.2.0",
+  "hash_algorithm": "SHA-256",
+  "self_excluded": true,
+  "sha256sums_excludes": [
+    "MANIFEST.json",
+    "SHA256SUMS.txt"
+  ],
+  "files": [
+    {
+      "path": "AI_USAGE.md",
+      "bytes": 667,
+      "sha256": "d85ef90c62dd44f3a220820ff7df00a350992d7357370e5c1ef5eb714b5bbacf"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2481,
+      "sha256": "9296ad5031c016de8083251518d01c4a13cdb6fdbec461ecac100288358a3604"
+    },
+    {
+      "path": "README.zh-CN.md",
+      "bytes": 1358,
+      "sha256": "bf1810edca376860db76ebac7e9c301d083fa89a374371101bc8cf2d932a66ef"
+    },
+    {
+      "path": "REFERENCES.md",
+      "bytes": 2869,
+      "sha256": "8d03be451e97553ad0b18895966490d17b1e6fc6551cfcbbbd6d7e1ac602edaf"
+    },
+    {
+      "path": "REPRODUCIBILITY.md",
+      "bytes": 4306,
+      "sha256": "02f28204cb7abdd82b2fb7af5b40709a72da423f4705a29acd3eddbbaa915680"
+    },
+    {
+      "path": "RIGHTS.md",
+      "bytes": 825,
+      "sha256": "fed3050997e15c6d3b72eb686b21af5cf51f4f5b2da3c3d214ff2d9f7d56fbe2"
+    },
+    {
+      "path": "SCOPE.md",
+      "bytes": 1799,
+      "sha256": "9aff516b87c378938cbcc6c38db33add610771731675d212224b8b50bd21846b"
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "bytes": 1136,
+      "sha256": "5e87602f2c54b1627a8599a1df4021cb6775edd1f203e14843ae580b22c53903"
+    },
+    {
+      "path": "WHITELIST.txt",
+      "bytes": 241,
+      "sha256": "0a2f0cc8d299558070b25813a27dd898e32b9642cd5681093c9674ab2fb83294"
+    },
+    {
+      "path": "extensions/paper/proof.pdf",
+      "bytes": 405210,
+      "sha256": "5f26ac0a52247d9871203d4d1dc3d481f99b6a58aafc8857071a28f67e240476"
+    },
+    {
+      "path": "extensions/paper/proof.tex",
+      "bytes": 28277,
+      "sha256": "e6ea761e083415de7c36df7dc06ca76c0257d2f6401e91cbff16adced81e7610"
+    },
+    {
+      "path": "hardinian.py",
+      "bytes": 7706,
+      "sha256": "a6335543b9846aae3f18e113ce2e52a661e6c1c97301e5e5b62b899f5f45f753"
+    },
+    {
+      "path": "hardinian_results.json",
+      "bytes": 72376,
+      "sha256": "ad6c3e1dc81956cff930fcaf405e6b47be64a9e49c4b0e7c5b3ef7821a41929d"
+    },
+    {
+      "path": "main.pdf",
+      "bytes": 338401,
+      "sha256": "b323ddd9482e3e8df3d2fba42c168b6929db28a4e7ed7d0e37cd70762a54b11f"
+    },
+    {
+      "path": "main.tex",
+      "bytes": 12862,
+      "sha256": "3f56b2306d89e0f2ea9d0394fdb6261d2f39a2bed1f198cea187966c1022af1a"
+    }
+  ]
+}

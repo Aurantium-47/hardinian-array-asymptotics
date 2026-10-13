@@ -1,53 +1,25 @@
-# Two asymptotic formulas for square Hardinian arrays
+# Asymptotics of square Hardinian arrays
 
-A proof of the `r = 2` and `r = 3` formulas in the asymptotic conjecture table of Robert Dougherty-Bliss and Manuel Kauers, *Hardinian Arrays*, **Electronic Journal of Combinatorics 31(2) (2024), P2.9**, [DOI: 10.37236/12358](https://doi.org/10.37236/12358), page 12:
+Aurantium · v0.2.0 · 14 October 2026
+
+For every integer r>=1 fixed before n tends to infinity, this extension proves
 
 \[
-H_2(n,n)\sim\frac{16^n}{324\pi n},\qquad
-H_3(n,n)\sim\frac{64^n}{78732\pi n^3}.
+H_r(n,n)\sim c_r4^{rn}n^{-\binom r2},\qquad
+c_r=\frac{2^{r(r-3)}}{3^{r^2}\pi^r}\prod_{j=1}^{r}\Gamma(j/2)^2.
 \]
 
-Here `H_r(n,n)` counts the square arrays defined in that paper. Both limits hold for fixed `r` as the integer side length `n` tends to infinity. The result does not cover general `r`.
+The full proof retains the arbitrary fixed-order binomial expansion on a logarithmic window, cancellation of all lower orders, the Mehta normalization, the discrete Vandermonde square sum, the whole omitted tail and the n-2 shift in the constant. It includes kappa_1=1 and the exact r=0,1 cases. It does not treat r growing with n or a joint rectangular limit.
 
-[OEIS A253217](https://oeis.org/A253217) credits the `r = 2` asymptotic conjecture to Vaclav Kotesovec on March 2, 2023.
+- [General extension PDF](extensions/paper/proof.pdf) and [LaTeX](extensions/paper/proof.tex)
+- [Original r=2,3 PDF](main.pdf) and [LaTeX](main.tex), retained byte-for-byte
+- [Scope](SCOPE.md), [references](REFERENCES.md), [reproducibility](REPRODUCIBILITY.md), [rights](RIGHTS.md)
+- [中文说明](README.zh-CN.md), [AI assistance](AI_USAGE.md)
 
-## Read the proof
+The constants match the r<=5 table in Dougherty-Bliss–Kauers, *Hardinian Arrays*, EJC 31(2) (2024), P2.9. However, c_7=2^18·5^2/(3^45 pi^3) refutes the extra suggestion that all constants use only **integer** powers of 2, 3 and pi. The displayed table and asymptotic scale are established; that separate additional pattern fails.
 
-- [Manuscript PDF](main.pdf)
-- [Standalone LaTeX source](main.tex)
-- [中文简述](README.zh-CN.md)
-- [AI assistance and verification status](AI_USAGE.md)
+The formal four-page ACM poster *Rectangular Hardinian Arrays* has been read for the comparison. Its eventual polynomial theorem fixes width k and does not justify setting k=n. The bounded source comparison does not certify first discovery or worldwide priority.
 
-Starting from Dougherty-Bliss and Kauers's published complementary-minor counting identity (the proof of Theorem 6, page 9), the argument derives exact sums of squares. A uniform binomial expansion and a geometric tail bound establish the limits; two moment determinants give the constants. No conjectured recurrence is used.
+This version extends the [public v0.1.0 release](https://github.com/Aurantium-47/hardinian-array-asymptotics/releases/tag/v0.1.0). Its original mathematical manuscript, code and results remain unchanged; its r=2,3 limitations are the historical scope of that volume. The original volume preserves its OEIS A253217 attribution of the r=2 asymptotic conjecture to Vaclav Kotesovec.
 
-The scope of this version is a written proof with reproducible finite checks. It does not claim proof-assistant verification, external peer review, or completion of an exhaustive priority search.
-
-## Reproduce the checks
-
-From this directory, run with Python 3.8 or later:
-
-```text
-python hardinian.py --max-n 201
-```
-
-Only the standard library is required for the integer checks. Do not use Python's `-O` option, because the program uses assertions. If SymPy and mpmath are installed, the script also checks the two rational moment determinants symbolically and prints decimal ratios to the asymptotic leading terms. The included run used Python 3.8.3, SymPy 1.6.1 and mpmath 1.1.0.
-
-The program writes [hardinian_results.json](hardinian_results.json), including:
-
-- exact square-sum counts through `n = 201`;
-- direct enumeration using the original array rules for `1 ≤ n ≤ 6`, for both parameters;
-- independent evaluation of the complementary-minor formula for `3 ≤ n ≤ 8`;
-- agreement with the 37 transcribed terms of [OEIS A253217](https://oeis.org/A253217), and the first 24 terms plus the `n = 100, 101` entries of [OEIS A252998](https://oeis.org/A252998).
-
-The OEIS source URLs and the exact comparison values are included in the script. The result file comes from an actual successful run. Finite checks support the formulas' implementation; the manuscript proves the infinite limits.
-
-## Build the PDF
-
-With a standard LaTeX installation:
-
-```text
-pdflatex -interaction=nonstopmode -halt-on-error main.tex
-pdflatex -interaction=nonstopmode -halt-on-error main.tex
-```
-
-The bibliography is included in the source. [SHA256SUMS.txt](SHA256SUMS.txt) records the hashes of the public content files.
+No new mathematical computation was performed in preparing this extension. Author-reported data, an earlier separate candidate replay and independently implemented finite checks are distinguished in REPRODUCIBILITY.md. Finite checks do not substitute for the infinite argument. Prepared with AI assistance; no independent human peer review or proof-assistant certification is claimed. Third-party papers are linked, not bundled. WHITELIST.txt gives the payload, and MANIFEST.json/SHA256SUMS.txt identify its bytes.

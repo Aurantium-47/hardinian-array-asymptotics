@@ -1,0 +1,684 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Pf}{Pf}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\title{Diagonal asymptotics of square Hardinian arrays\\[4pt]
+\large A formula for every fixed parameter}
+\author{Aurantium}
+\date{14 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Starting from the complementary-minor identity of Dougherty-Bliss and Kauers
+and the sum-of-squares reduction in the public $r=2,3$ note, we prove
+\[
+ H_r(n,n)\sim c_r\,4^{rn}n^{-\binom r2},\qquad
+ c_r=\frac{2^{r(r-3)}}{3^{r^2}\pi^r}
+       \prod_{j=1}^r\Gamma(j/2)^2,
+\]
+for every fixed integer $r\ge1$. In particular,
+$H_4(n,n)\sim4\cdot256^n/(3^{16}\pi^2 n^6)$, in agreement with the published asymptotic table.
+The proof uses a Pfaffian sign identity, a finite-order local binomial expansion,
+alternating-polynomial cancellation, a Gaussian integral, and an explicit
+geometric tail bound. We also give a direct calculation of the four-row constant
+which does not require the Gaussian integral evaluation. The formula matches
+the published constants through $r=5$, but its $r=7$ specialization disproves
+the separate suggestion that every constant is a product of integer powers
+of $2,3,\pi$. The results concern $r$ fixed before $n$ tends to infinity.
+\end{abstract}
+
+\section{Problem, scope, and statement}
+
+For integers $r\ge0$ and $n\ge1$, let $H_r(n,n)$ count arrays
+$(a_{ij})_{1\le i,j\le n}$ with entries in $\Z_{\ge0}$ such that
+\[
+ a_{11}=0,\qquad a_{nn}=n-r-1,
+ \qquad |a_{ij}-(\max(i,j)-1)|\le r,
+\]
+and each permitted step right, down, or diagonally down-right increases the
+entry by $0$ or $1$. These are the square arrays defined in~\cite{dk}.
+The asymptotic table on page~12 of its 13-page journal version gives the
+fixed-parameter cases through $r=5$. The source identity used below occurs
+in the proof of its Theorem~6, on page~9. This note extends the public
+$r=2,3$ treatment~\cite{prior} to every fixed parameter.
+
+For $n\le r$, the prescribed endpoint is negative and the count is zero. For
+$n=r+1$ the all-zero array is the unique array. In particular, $H_4(n,n)=0$ for
+$n=1,2,3,4$ and $H_4(5,5)=1$. These boundary cases do not change an asymptotic
+statement. All limits here are through integer $n$ with $r$ fixed first. The
+proof uses classical finite combinatorics and real analysis.
+
+\begin{theorem}\label{thm:main}
+For each fixed integer $r\ge1$, put $R=\binom r2$. Then
+\begin{equation}\label{eq:main}
+ H_r(n,n)\sim
+ \frac{2^{r(r-3)}}{3^{r^2}\pi^r}
+ \left(\prod_{j=1}^r\Gamma(j/2)^2\right)4^{rn}n^{-R}.
+\end{equation}
+For $r=0$, $H_0(n,n)=1$ exactly. In particular,
+\begin{equation}\label{eq:target}
+ \boxed{H_4(n,n)\sim\frac{4\,256^n}{3^{16}\pi^2n^6}.}
+\end{equation}
+The same theorem also proves the $r=5$ row of the source table:
+\[
+ H_5(n,n)\sim\frac{16\,1024^n}{3^{23}\pi^2n^{10}}.
+\]
+\end{theorem}
+
+The sum-of-squares identity and the probability interpretation in the next
+section are established starting material from the public note~\cite{prior}.
+They are reproduced to fix all conventions and dependencies. No novelty is
+claimed for those identities, for Pfaffian algebra, for Stirling's expansion,
+or for the Gaussian Selberg integral.
+
+\section{Exact finite identities}
+
+Fix $n\ge r+1$ and put $N=n-2$. For a binomial coefficient outside its usual
+integer range, use the value zero. Rows and columns in every submatrix are in
+increasing order, and an empty determinant is $1$. Write
+\[
+ M=\left[\binom{i+j}{i}\right]_{0\le i,j\le N}.
+\]
+The counting identity from~\cite{dk} is
+\begin{equation}\label{eq:source}
+ H_r(n,n)=\sum_{\substack{I,J\subseteq\{0,\ldots,N\}\\|I|=|J|=r}}
+              \det M_{I^c,J^c}.
+\end{equation}
+Every subset occurs once; there is no factorial multiplicity.
+
+\begin{lemma}[Sum of squares and uniform bound]\label{lem:squares}
+For $0\le u_1<\cdots<u_r\le N$, define
+\begin{align}
+ W_r(u_1,\ldots,u_r)
+ &=\sum_{0\le i_1<\cdots<i_r\le N}
+       \det\left[\binom{u_a}{i_b}\right]_{a,b=1}^r,\label{eq:W}\\
+ w_r(u_1,\ldots,u_r)&=2^{-\sum_a u_a}W_r(u_1,\ldots,u_r).
+\end{align}
+Then
+\begin{equation}\label{eq:squares}
+ H_r(n,n)=\sum_{0\le u_1<\cdots<u_r\le N}W_r(u_1,\ldots,u_r)^2.
+\end{equation}
+If the $X_a$ are independent with $X_a\sim\operatorname{Bin}(u_a,1/2)$, then
+\begin{equation}\label{eq:signexpectation}
+ w_r(u_1,\ldots,u_r)=
+ \E\left[\sgn\prod_{a<b}(X_b-X_a)\right],\qquad |w_r|\le1.
+\end{equation}
+Here $\sgn(0)=0$.
+\end{lemma}
+\begin{proof}
+Set $P_{u,i}=\binom ui$ and $E=\operatorname{diag}((-1)^i)$. Vandermonde's
+binomial identity gives $M=PP^T$. Since $P$ is unit lower triangular and
+$P^{-1}=EPE$, we have $\det M=1$ and
+\[
+ M^{-1}=E(P^TP)E.
+\]
+Jacobi's complementary-minor identity therefore gives
+\[
+ \det M_{I^c,J^c}
+ =(-1)^{\sum I+\sum J}\det(M^{-1})_{J,I}
+ =\det(P^TP)_{J,I}.
+\]
+All matrices are finite and $M$ is invertible, as required. Cauchy--Binet
+expands the last determinant as a sum over $r$-element row sets of $P$.
+Summing over $I,J$ gives~\eqref{eq:squares}. Expanding~\eqref{eq:W} and sorting
+the distinct values of the independent $X_a$ gives~\eqref{eq:signexpectation}.
+A tie contributes zero to the sign and has no corresponding strictly increasing
+column set. Since the sign has absolute value at most one, the bound follows.
+\end{proof}
+
+For $u<v$, define
+\begin{equation}\label{eq:Q}
+ D(u,v)=\sum_{j=u}^{v-1}\binom{u+v}{j},\qquad
+ Q(u,v)=2^{-u-v}D(u,v),
+\end{equation}
+and extend $D,Q$ skew-symmetrically, with diagonal entries zero. For independent
+$X\sim\operatorname{Bin}(u,1/2)$ and $Y\sim\operatorname{Bin}(v,1/2)$,
+$Y-X$ has the distribution of $Z-u$ for $Z\sim\operatorname{Bin}(u+v,1/2)$.
+Symmetry about $(u+v)/2$ gives
+\[
+ \E\sgn(Y-X)=\Prb(Z>u)-\Prb(Z<u)=\Prb(u\le Z<v)=Q(u,v).
+\]
+
+\begin{lemma}[Exact Pfaffian reduction]\label{lem:pf}
+Let $A_{ij}=Q(u_i,u_j)$ for $1\le i,j\le r$. If $r$ is even, then
+$w_r=\Pf A$. If $r$ is odd, then
+\begin{equation}\label{eq:augmented}
+ w_r=\Pf\begin{pmatrix}A&\mathbf 1\\-\mathbf 1^T&0\end{pmatrix}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:pf4}
+ w_4=Q(u_1,u_2)Q(u_3,u_4)-Q(u_1,u_3)Q(u_2,u_4)
+                         +Q(u_1,u_4)Q(u_2,u_3).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For any even number of real numbers $x_1,\ldots,x_{2m}$,
+\begin{equation}\label{eq:signpf}
+ \Pf[\sgn(x_j-x_i)]_{i,j=1}^{2m}
+   =\sgn\prod_{i<j}(x_j-x_i).
+\end{equation}
+If two values coincide, the corresponding rows and columns coincide and both
+sides are zero. If all values are distinct, permuting them into increasing order
+multiplies both sides by the same permutation sign. In increasing order the
+matrix has every entry above the diagonal equal to one. Its Pfaffian is one,
+by induction using the first-row expansion and
+$\sum_{j=2}^{2m}(-1)^j=1$. This proves~\eqref{eq:signpf}, including ties.
+For odd $r$, append a formal value $+\infty$, whose pairwise signs with the
+original variables are all one. In a Pfaffian matching each random variable
+appears in exactly one factor. Independence therefore factors the expectation
+of each product into pair expectations. Apply~\eqref{eq:signexpectation} and
+\eqref{eq:Q}; the dummy factor in the odd case is deterministically one.
+\end{proof}
+
+\section{A uniform local expansion to arbitrary fixed order}
+
+We need coefficient structure, not a central limit theorem without an error
+estimate. All constants in this section may depend on the fixed expansion order
+$K$ and the fixed number $C$, but not on $N,L,a,b$ in the specified ranges.
+
+\begin{lemma}\label{lem:local}
+Fix $K\ge0$ and $C>0$. There are polynomials $P_k(a,b)\in\mathbb Q[a,b]$,
+$0\le k\le K$, such that, uniformly for integer offsets
+$0\le b<a\le L\le C\log N$,
+\begin{equation}\label{eq:local}
+ Q(N-a,N-b)=\frac1{\sqrt{\pi N}}\sum_{k=0}^K\frac{P_k(a,b)}{N^k}
+ +O_{K,C}\left(\frac{(1+L)^{2K+3}}{N^{K+3/2}}\right).
+\end{equation}
+Every $P_k$ is antisymmetric in $a,b$, has total degree at most $2k+1$, and its
+homogeneous part of degree $2k+1$ is
+\begin{equation}\label{eq:top}
+ [P_k(a,b)]_{2k+1}
+ =\frac{(-1)^k(a-b)^{2k+1}}{4^k k!(2k+1)}.
+\end{equation}
+In particular $P_0(a,b)=a-b$.
+\end{lemma}
+\begin{proof}
+Put $d=a-b$, $s=a+b$, and $m=2N-s$. The summation indices in~\eqref{eq:Q}
+are $j=m/2+t$, with
+\[
+ t=-d/2,-d/2+1,\ldots,d/2-1.
+\]
+The values $t$ may be half-integers; the factorial arguments are always integers.
+For sufficiently large $N$, all three factorial arguments $m,m/2+t,m/2-t$
+are positive and comparable to $N$, uniformly in the window.
+
+Here is the finite-order Stirling calculation including the degree information.
+Write $x=2t/m$ and $c_h=B_{2h}/(2h(2h-1))$. For an integer $J$ with
+$2J+1\ge K+1$, the logarithmic Stirling formula with its positive-real-axis
+remainder bound~\cite{dlmf} gives
+\begin{align}
+ &\log\left(2^{-m}\binom{m}{m/2+t}\sqrt{\pi N}\right)\notag\\
+ &=-\frac12\log\left(1-\frac{s}{2N}\right)
+   -\frac m2\bigl((1+x)\log(1+x)+(1-x)\log(1-x)\bigr)
+   -\frac12\log(1-x^2)\notag\\
+ &\quad+\sum_{h=1}^J c_h
+ \left(m^{-(2h-1)}-(m/2+t)^{-(2h-1)}-(m/2-t)^{-(2h-1)}\right)
+ +O_J(N^{-2J-1}).\label{eq:logmass}
+\end{align}
+One may increase $J$ freely before this finite expansion. All arguments of
+Stirling's formula are positive reals, so its standard remainder bound applies;
+there is no large complex shift or unverified sector condition.
+
+Taylor-expand~\eqref{eq:logmass} in $N^{-1}$ through order $K$.
+The coefficient $\ell_j(s,t)$ at $N^{-j}$ is an even polynomial in $t$ of
+total degree at most $j+1$, and
+\[
+ \ell_1(s,t)=-t^2+s/4-1/8.
+\]
+To verify the degree bound explicitly, an entropy term is a multiple of
+$t^{2h}m^{-(2h-1)}$. Its $N^{-j}$ coefficient is a multiple of
+$t^{2h}s^{j-2h+1}$, of degree $j+1$. The logarithmic prefactors give degree
+at most $j$, and the $h$th Stirling correction gives degree at most $j-2h+1$.
+The symmetry in $t$ follows directly from~\eqref{eq:logmass}.
+
+The remainders of these Taylor expansions are uniform because
+$|s|/N,|t|/N\to0$ uniformly and $s,|t|=O(\log N)$. More precisely they are
+$O_{K,C}((1+L)^{K+2}N^{-K-1})$ before exponentiation. Expanding the exponential
+now yields
+\begin{equation}\label{eq:massgeneral}
+ 2^{-m}\binom m{m/2+t}=
+ \frac1{\sqrt{\pi N}}\left(
+  \sum_{k=0}^K\frac{T_k(s,t)}{N^k}
+  +O_{K,C}\left(\frac{(1+L)^{2K+2}}{N^{K+1}}\right)\right).
+\end{equation}
+Indeed, the whole logarithm is $O((1+L)^2/N)$, and a Taylor remainder of
+order $K+1$ in its exponential has precisely the displayed bound.
+The polynomial $T_k$ is even in $t$ and has total degree at most $2k$.
+Its degree-$2k$ part is uniquely $(-t^2)^k/k!$: an $\ell_j$ with $j>1$
+has degree $j+1<2j$, and the other terms of $\ell_1$ have degree below two.
+
+For each $h\ge0$, Faulhaber's identity gives
+\begin{equation}\label{eq:Faulhaber}
+ \sum_{v=0}^{d-1}(v-d/2)^{2h}
+ =\frac{B_{2h+1}(d/2)-B_{2h+1}(-d/2)}{2h+1}.
+\end{equation}
+This is an odd polynomial in $d$ of degree at most $2h+1$, with leading term
+$d^{2h+1}/(4^h(2h+1))$. Summing each monomial of $T_k(s,t)$ over this grid
+therefore gives an odd polynomial in $d$, with $s$ unchanged, of total degree
+at most $2k+1$. It is antisymmetric in $a,b$, since interchanging them fixes
+$s$ and negates $d$. The unique top-degree term gives~\eqref{eq:top}.
+Finally there are $d\le L$ summands, so the error in~\eqref{eq:massgeneral}
+becomes the error in~\eqref{eq:local}. This also proves uniformity across both
+possible grid parities.
+\end{proof}
+
+\section{Why every lower asymptotic order cancels}
+
+For decreasing offsets $a_1>\cdots>a_r\ge0$, define
+\[
+ \Delta(a)=\prod_{1\le i<j\le r}(a_i-a_j)>0.
+\]
+It has degree $R=\binom r2$. For integer distinct offsets, $\Delta(a)\ge1$.
+
+\begin{proposition}\label{prop:localr}
+Fix $r\ge2$ and $C>0$. There is a constant $\kappa_r$ such that, uniformly for
+$0\le a_r<\cdots<a_1\le L\le C\log N$,
+\begin{equation}\label{eq:localr}
+ w_r(N-a_1,\ldots,N-a_r)
+ =\kappa_r\Delta(a)N^{-R/2}
+ +O_{r,C}\left((1+L)^{R+2}N^{-R/2-1}\right).
+\end{equation}
+The constant is the coefficient of $t^R\Delta(a)$ in the even or augmented
+Pfaffian with ordinary entries $\operatorname{erf}(t(a_i-a_j)/2)$.
+\end{proposition}
+\begin{proof}
+Let $m=\lfloor r/2\rfloor$ and set
+\[
+ K_r=\frac{R-m}{2}=
+ \begin{cases}m(m-1),&r=2m,\\m^2,&r=2m+1.\end{cases}
+\]
+This is a nonnegative integer. Every matching in Lemma~\ref{lem:pf} has exactly
+$m$ ordinary entries. In the odd case its one remaining entry is the constant
+one associated with the dummy index.
+
+Insert Lemma~\ref{lem:local} with $K=K_r$ into the Pfaffian and remove the common
+factor $(\pi N)^{-m/2}$. Its coefficient at $N^{-k}$ is an alternating
+polynomial in $a_1,\ldots,a_r$ of total degree at most $m+2k$. This follows
+because a simultaneous permutation of ordinary rows and columns changes the
+Pfaffian by the permutation sign. Every alternating polynomial over
+$\mathbb Q$ is divisible by $\Delta(a)$: it vanishes when $a_i=a_j$, hence each
+linear factor $a_i-a_j$ divides it, and these distinct prime factors have a
+product dividing it. Thus all coefficients with $k<K_r$ vanish, since their
+degree is below $R$. The coefficient at $k=K_r$ is $\lambda_r\Delta(a)$ for a
+constant $\lambda_r$.
+
+At that first possible order, only the top homogeneous parts~\eqref{eq:top}
+can contribute. These are exactly the coefficients in
+\[
+ \operatorname{erf}\left(\frac{td}{2}\right)
+ =\frac1{\sqrt\pi}\sum_{k\ge0}
+       \frac{(-1)^k d^{2k+1}t^{2k+1}}{4^k k!(2k+1)}.
+\]
+Therefore $\kappa_r=\pi^{-m/2}\lambda_r$ is characterized as stated.
+
+For clarity, the remainders are controlled before using any cancellation.
+Each actual or truncated ordinary entry is $O_{r,C}((1+L)N^{-1/2})$.
+Replacing one entry by the remainder from~\eqref{eq:local} gives, in a product
+of $m$ entries,
+\[
+ O_{r,C}\left((1+L)^{2K_r+3+m-1}N^{-K_r-3/2-(m-1)/2}\right)
+ =O_{r,C}\left((1+L)^{R+2}N^{-R/2-1}\right).
+\]
+The discarded terms of total index $k>K_r$ in the product of truncated
+polynomials satisfy the same bound, since $(1+L)^2/N\to0$. There are only
+finitely many pairings for fixed $r$. This proves~\eqref{eq:localr}.
+\end{proof}
+
+\section{Identification of the universal constant}
+
+For completeness, set $\kappa_1=1$, as given by the augmented
+Pfaffian when $r=1$.
+
+\begin{lemma}\label{lem:kappa}
+For each $r\ge1$,
+\begin{equation}\label{eq:kappa}
+ \kappa_r=
+ \frac{\prod_{j=1}^r\Gamma(j/2)}
+      {\pi^{r/2}\prod_{j=0}^{r-1}j!}>0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix any strictly decreasing real tuple $a_1>\cdots>a_r$, and let the independent
+variables $Y_i$ be normal with mean $-ta_i$ and variance one. Their pairwise
+sign expectations are $\operatorname{erf}(t(a_i-a_j)/2)$. Consequently the
+Gaussian version of Lemma~\ref{lem:pf} identifies its Pfaffian as
+\[
+ F_a(t)=\E\sgn\prod_{i<j}(Y_j-Y_i).
+\]
+Let $\phi(x)=(2\pi)^{-1/2}e^{-x^2/2}$. Splitting $\R^r$ into its ordering
+chambers gives
+\begin{align}
+ F_a(t)
+ &=\int_{x_1<\cdots<x_r}\det[\phi(x_j+ta_i)]_{i,j=1}^r\,dx\notag\\
+ &=e^{-t^2\sum_i a_i^2/2}
+   \int_{x_1<\cdots<x_r}\det[e^{-ta_i x_j}]_{i,j=1}^r
+           \prod_j\phi(x_j)\,dx.\label{eq:gaussian}
+\end{align}
+In the determinant of exponentials the first nonzero Taylor coefficient is
+\[
+ [t^R]\det[e^{-ta_i x_j}]
+ =\frac{\Delta(a)\prod_{i<j}(x_j-x_i)}{\prod_{j=0}^{r-1}j!}.
+\]
+To verify this, expand each exponential in monomials. Distinct powers are
+required in a nonzero determinant; their smallest possible sum is
+$0+1+\cdots+(r-1)=R$. The corresponding two determinants are the Vandermonde
+determinants in $-a_i$ and in $x_j$; the first is $\Delta(a)$.
+
+Differentiation through the integrals to this finite order is valid. For $|t|\le1$
+and fixed $a$, every derivative through order $R+1$ of the Gaussian densities is
+bounded by a polynomial in $|x|$ times $C_a e^{-\sum_j x_j^2/4}$, which is
+integrable. Thus if $Z_1,\ldots,Z_r$ are independent standard normals,
+\begin{equation}\label{eq:kappaintegral}
+ [t^R]F_a(t)=\frac{\Delta(a)}{r!\prod_{j=0}^{r-1}j!}
+              \E\left|\prod_{i<j}(Z_j-Z_i)\right|.
+\end{equation}
+The factor $1/r!$ is the passage from one ordering chamber to all chambers.
+
+The Gaussian Selberg (Mehta) integral at parameter $\gamma=1/2$ is
+\begin{equation}\label{eq:Mehta}
+ \E\left|\prod_{i<j}(Z_j-Z_i)\right|
+ =\prod_{j=1}^r\frac{\Gamma(1+j/2)}{\Gamma(3/2)}.
+\end{equation}
+This is the normalization in~\cite[eqs.~(1.5)--(1.8)]{fw}. Its hypotheses hold:
+$r$ is a positive integer, $\gamma=1/2$ is in the positive-parameter domain,
+the integrand has no nonintegrable collision singularities, and its tails are
+a fixed polynomial times a Gaussian. Combining~\eqref{eq:kappaintegral} and
+\eqref{eq:Mehta}, then using $\Gamma(1+j/2)=(j/2)\Gamma(j/2)$ and
+$\Gamma(3/2)=\sqrt\pi/2$, proves~\eqref{eq:kappa}. All gamma arguments are
+positive, so $\kappa_r>0$.
+\end{proof}
+
+\section{The weighted discrete Vandermonde sum}
+
+\begin{lemma}\label{lem:Z}
+For a positive integer $r$ and $0<q<1$, define
+\[
+ Z_r(q)=\sum_{0\le b_1<\cdots<b_r}
+          q^{\sum_i b_i}\prod_{i<j}(b_j-b_i)^2.
+\]
+Then
+\begin{equation}\label{eq:Z}
+ Z_r(q)=\frac{q^{\binom r2}\prod_{j=0}^{r-1}(j!)^2}{(1-q)^{r^2}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $\mu_k(q)=\sum_{b\ge0}b^kq^b$, where $0^0=1$. All these moments converge.
+Cauchy--Binet applied first to a finite weighted Vandermonde matrix, then taking
+its number of columns to infinity, gives
+\[
+ Z_r(q)=\det[\mu_{i+j}(q)]_{0\le i,j<r}.
+\]
+The passage to infinity is legitimate because each moment converges and a finite
+determinant is a polynomial in its entries.
+
+For an elementary evaluation of this determinant, define polynomials $M_j(x)$ by
+\[
+ \sum_{j\ge0}M_j(x)z^j
+ =\frac{(1-z/q)^x}{(1-z)^{x+1}},\qquad x\in\Z_{\ge0}.
+\]
+The degree of $M_j$ is $j$ and its leading coefficient is
+$(1-1/q)^j/j!$. Summing a geometric series gives
+\begin{align*}
+ &\sum_{x\ge0}q^x
+ \frac{(1-z/q)^x}{(1-z)^{x+1}}
+ \frac{(1-w/q)^x}{(1-w)^{x+1}}\\
+ &\qquad=\frac1{(1-z)(1-w)-q(1-z/q)(1-w/q)}
+ =\frac1{(1-q)(1-zw/q)}.
+\end{align*}
+For $z,w$ in a sufficiently small neighborhood of zero the geometric series
+converges absolutely and uniformly on smaller neighborhoods, since its ratio
+is $q<1$ at zero. Coefficient comparison is therefore valid and yields
+\[
+ \sum_{x\ge0}q^xM_j(x)M_k(x)=\frac{q^{-j}}{1-q}\,\delta_{jk}.
+\]
+After making the polynomials monic, their squared norms are
+\[
+ h_j=\frac{(j!)^2q^j}{(1-q)^{2j+1}}.
+\]
+The change from monomials to monic polynomials is unit triangular, so the moment
+determinant is $\prod_{j=0}^{r-1}h_j$. This is~\eqref{eq:Z}.
+\end{proof}
+
+\section{Tail control and completion of the theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The $r=0$ case is immediate from the distance constraint. For $r=1$, the
+sum-of-squares identity gives
+\[
+ H_1(n,n)=\sum_{u=0}^{n-2}4^u=\frac{4^{n-1}-1}{3},
+\]
+with the empty sum at $n=1$. This has the stated constant $1/12$.
+
+Fix now $r\ge2$. Replacing row indices by decreasing offsets in
+\eqref{eq:squares} gives
+\begin{equation}\label{eq:normalH}
+ \frac{N^RH_r(n,n)}{4^{rN}}
+ =\sum_{N\ge a_1>\cdots>a_r\ge0}
+       4^{-\sum_i a_i}N^Rw_r(N-a_1,\ldots,N-a_r)^2.
+\end{equation}
+Choose
+\[
+ L=\left\lceil(R+2)\log_4 N\right\rceil.
+\]
+The window $L=O_r(\log N)$ is covered by Proposition~\ref{prop:localr} for a
+fixed $C$ depending only on $r$. Outside it, the global bound $|w_r|\le1$ gives
+\begin{align}
+ &N^R\sum_{\max_i a_i>L}4^{-\sum_i a_i}\notag\\
+ &\quad\le rN^R\left(\sum_{a>L}4^{-a}\right)
+                     \left(\sum_{a\ge0}4^{-a}\right)^{r-1}
+ =\frac r3\left(\frac43\right)^{r-1}N^R4^{-L}
+ =O_r(N^{-2}).\label{eq:tail}
+\end{align}
+Here the sum was enlarged to all nonnegative integer tuples, so it also bounds
+all allowable decreasing tuples.
+
+Inside the window, $\Delta(a)\ge1$ and $\kappa_r>0$. The relative error in
+\eqref{eq:localr} is consequently
+$O_r((1+L)^{R+2}/N)=o(1)$ uniformly. Squaring gives
+\[
+ N^Rw_r(N-a_1,\ldots,N-a_r)^2
+ =\kappa_r^2\Delta(a)^2(1+o(1))
+\]
+uniformly there. The weighted main sum converges to $Z_r(1/4)$, which is finite
+by Lemma~\ref{lem:Z}. The uniform relative error therefore contributes $o(1)$
+to the sum. Combining this with~\eqref{eq:tail} yields
+\begin{equation}\label{eq:Nlimit}
+ H_r(n,n)\sim4^{rN}N^{-R}\kappa_r^2 Z_r(1/4).
+\end{equation}
+No exchange of a merely pointwise limit with an uncontrolled infinite sum is
+used.
+
+Finally $N=n-2$, and
+\begin{align*}
+ c_r
+ &=4^{-2r}\kappa_r^2 Z_r(1/4)\\
+ &=4^{-2r}\,
+ \frac{\prod_{j=1}^r\Gamma(j/2)^2}{\pi^r\prod_{j=0}^{r-1}(j!)^2}
+ \frac{4^{r^2-R}\prod_{j=0}^{r-1}(j!)^2}{3^{r^2}}\\
+ &=\frac{2^{r(r-3)}}{3^{r^2}\pi^r}\prod_{j=1}^r\Gamma(j/2)^2.
+\end{align*}
+We used $N/n\to1$ and $r^2-R-2r=r(r-3)/2$. This proves~\eqref{eq:main}.
+For $r=4$, the gamma product before squaring is
+$\Gamma(1/2)\Gamma(1)\Gamma(3/2)\Gamma(2)=\pi/2$, giving
+$c_4=4/(3^{16}\pi^2)$ exactly.
+\end{proof}
+
+\section{A direct four-row calculation}
+
+This section gives an independent, elementary extraction of the required
+four-row coefficient. In particular, the $r=4$ conclusion does not depend on
+the general Gaussian integral evaluation in Lemma~\ref{lem:kappa}.
+
+Put $d=a-b$ and $s=a+b$. Lemma~\ref{lem:local} through $K=2$ reads
+\begin{align}
+ Q(N-a,N-b)
+ &=\frac d{\sqrt{\pi N}}
+   \left(1+\frac{A_1(s,d)}{N}+\frac{A_2(s,d)}{N^2}\right)
+ +O\left((1+L)^7N^{-7/2}\right),\label{eq:Qexplicit}\\
+ A_1(s,d)&=\frac s4-\frac{d^2}{12}-\frac7{24},\notag\\
+ A_2(s,d)&=\frac{d^4}{160}-\frac{sd^2}{16}
+       +\frac{3s^2}{32}+\frac{3d^2}{32}-\frac{7s}{32}+\frac{61}{640}.\notag
+\end{align}
+For example the mass at $j=m/2+t$ has first two coefficients
+\begin{align*}
+ T_1(s,t)&=s/4-t^2-1/8,\\
+ T_2(s,t)&=3s^2/32-3st^2/4-3s/32+t^4/2+5t^2/8+1/128.
+\end{align*}
+Summing these and using
+\[
+ \sum t^2=\frac{d(d^2+2)}{12},\qquad
+ \sum t^4=\frac{d(3d^4+20d^2-8)}{240}
+\]
+gives~\eqref{eq:Qexplicit}.
+
+Insert it into~\eqref{eq:pf4}. After the common factor $(\pi N)^{-1}$,
+the coefficients of $N^0$ and $N^{-1}$ are alternating polynomials of degrees
+at most two and four. Both vanish. The coefficient of $N^{-2}$ is an
+alternating polynomial of degree at most six, hence a constant times
+$\Delta(a_1,a_2,a_3,a_4)$. Only the leading terms
+\[
+ g(d)=d-\frac{d^3}{12}\varepsilon+\frac{d^5}{160}\varepsilon^2
+\]
+are needed to determine that constant. At $(a_1,a_2,a_3,a_4)=(3,2,1,0)$,
+\[
+ [\varepsilon^2]\bigl(g(1)^2-g(2)^2+g(3)g(1)\bigr)=\frac12,
+ \qquad \Delta(3,2,1,0)=12.
+\]
+Thus the constant is $1/24$, and
+\begin{equation}\label{eq:local4explicit}
+ w_4(N-a_1,\ldots,N-a_4)
+ =\frac{\Delta(a)}{24\pi N^3}
+  +O\left((1+L)^8N^{-4}\right).
+\end{equation}
+The remaining constant is
+\[
+ Z_4(q)=\frac{144q^6}{(1-q)^{16}},\qquad
+ Z_4(1/4)=\frac{144\cdot4^{10}}{3^{16}}.
+\]
+Equations~\eqref{eq:Nlimit} and~\eqref{eq:local4explicit} give
+\[
+ H_4(n,n)\sim\frac{256^N}{576\pi^2N^6}
+                   \frac{144\cdot4^{10}}{3^{16}}.
+\]
+Replacing $N$ by $n-2$ contributes the essential factor
+$256^{-2}=4^{-8}$. The coefficient becomes
+\[
+ \frac{144\cdot4^{10}}{576\cdot4^8\cdot3^{16}\pi^2}
+ =\frac4{3^{16}\pi^2},
+\]
+which independently verifies the exact target constant.
+
+\section{Constants, source coverage and limits of scope}
+
+Theorem~\ref{thm:main} holds for each fixed integer $r\ge1$, with
+$H_0(n,n)=1$ separately. It makes no uniform assertion for $r$ growing with
+$n$ and no assertion about joint rectangular limits. The exponent and
+constants agree with all rows through $r=5$ in~\cite[p.~12]{dk}:
+\[
+\begin{array}{c|ccccc}
+r&1&2&3&4&5\\[2pt]\hline
+c_r&\dfrac1{12}&\dfrac1{2^2 3^4\pi}&\dfrac1{2^2 3^9\pi}
+&\dfrac{2^2}{3^{16}\pi^2}&\dfrac{2^4}{3^{23}\pi^2}
+\end{array}
+\]
+The formula also gives
+\[
+ c_6=\frac{2^{14}}{3^{34}\pi^3},\qquad
+ c_7=\frac{2^{18}\,5^2}{3^{45}\pi^3}.
+\]
+Thus the source's further suggestion that all constants use only powers of
+$2,3,\pi$ cannot hold with integer exponents for every $r$. The factor $5^2$
+at $r=7$ cannot be absorbed into those powers, by the transcendence of $\pi$
+and unique prime factorization. This concerns a separate informal general
+pattern: it does not contradict the displayed rows of the source table or
+the fixed-parameter asymptotic scale. Allowing arbitrary real exponents
+would remove the intended prime-factor restriction.
+
+\paragraph{Related rectangular work.}
+Dougherty-Bliss and Spahn's published four-page ISSAC poster abstract
+\emph{Rectangular Hardinian Arrays}~\cite{ds}, in ACM Communications in
+Computer Algebra, is available and has been read for this comparison.
+For fixed $r$ and fixed width $k$, its theorem makes $H_r(n,k)$ a polynomial
+of degree $r$ in $n$ for sufficiently large $n$, using a finite transfer
+matrix. Its hypotheses keep $k$ fixed; they do not permit substituting
+$k=n$ or give a uniform threshold and asymptotic estimate in growing $k$.
+That theorem therefore does not supply the square-array result proved here.
+This is a comparison of specified sources, not certification of worldwide
+publication priority.
+
+\paragraph{Proof dependencies and finite evidence.}
+The original complementary-minor count is an external combinatorial input
+from~\cite{dk}. The square-sum and sign-expectation reductions from the
+public note~\cite{prior} are rederived here with all conventions fixed.
+Jacobi's identity, Cauchy--Binet, Stirling's formula with its stated remainder,
+Faulhaber's identity and the Mehta integral are used explicitly at their
+respective steps. In particular, the all-$r$ constant uses the standard
+Gaussian integral~\cite{fw}, whereas the four-row calculation extracts its
+coefficient directly.
+
+No finite computation is needed to conclude the theorem. Earlier records
+contain both an author-reported exact-data run and separate later finite
+checks; the distribution's reproducibility note distinguishes these records
+from this manuscript preparation, during which no mathematical program was
+run. File hashes identify versions and do not themselves certify execution.
+None of these finite checks replaces the arbitrary-order expansion,
+Vandermonde cancellation, integral normalization or full tail estimate.
+
+\paragraph{Version and verification status.}
+This is the fixed-parameter extension volume of the public $r=2,3$
+note~\cite{prior}; the earlier manuscript, code and data remain unchanged
+historical material. Prepared with AI assistance. No independent human
+peer-review, proof-assistant certification or worldwide-priority claim is
+made.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{dk}
+R.~Dougherty-Bliss and M.~Kauers,
+\emph{Hardinian Arrays}, Electronic Journal of Combinatorics
+\textbf{31}(2) (2024), P2.9, 13 pages.
+\href{https://doi.org/10.37236/12358}{doi:10.37236/12358}.
+Theorem~6, p.~9; asymptotic table, p.~12.
+
+\bibitem{prior}
+Aurantium, \emph{Two asymptotic formulas for square Hardinian arrays},
+public research note, version~0.1.0 (2026).
+\href{https://github.com/Aurantium-47/hardinian-array-asymptotics/releases/tag/v0.1.0}{Public version and source archive}.
+Fixed source commit
+\href{https://github.com/Aurantium-47/hardinian-array-asymptotics/blob/8bf9f116a7d49c6b49ecfec9d30d14a2afc4502e/main.tex}{8bf9f116a7d49c6b49ecfec9d30d14a2afc4502e}.
+Section~2 derives the general square-sum and probability identities; the
+asymptotic conclusions of that volume cover $r=2,3$.
+
+\bibitem{fw}
+P.~J.~Forrester and S.~O.~Warnaar,
+\emph{The importance of the Selberg integral}, Bulletin of the American
+Mathematical Society (N.S.) \textbf{45} (2008), 489--534.
+\href{https://arxiv.org/abs/0710.3981}{arXiv:0710.3981}.
+The Gaussian integral normalization and evaluation are (1.5)--(1.8).
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\href{https://dlmf.nist.gov/5.11}{\S5.11(i)--(ii)},
+logarithmic Stirling expansion and positive-real-axis remainder bounds.
+
+\bibitem{ds}
+R.~Dougherty-Bliss and G.~Spahn,
+\emph{Rectangular Hardinian Arrays}, ACM Communications in Computer Algebra
+\textbf{58}(3), issue~229 (September 2024), 81--84,
+ISSAC 2024 poster abstracts.
+\href{https://doi.org/10.1145/3717582.3717589}{doi:10.1145/3717582.3717589}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,16 @@
+AI_USAGE.md
+MANIFEST.json
+README.md
+README.zh-CN.md
+REFERENCES.md
+REPRODUCIBILITY.md
+RIGHTS.md
+SCOPE.md
+SHA256SUMS.txt
+WHITELIST.txt
+extensions/paper/proof.pdf
+extensions/paper/proof.tex
+hardinian.py
+hardinian_results.json
+main.pdf
+main.tex

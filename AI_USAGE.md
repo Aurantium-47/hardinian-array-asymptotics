@@ -1,5 +1,7 @@
-# AI assistance
+# AI assistance and scope
 
-This research was completed with AI assistance. The mathematical statements, complete argument, source references, and reproducible checks are supplied so that readers can evaluate the result directly.
+This research was prepared with AI assistance. Full mathematical arguments, references and execution boundaries are supplied for direct scrutiny.
 
-The asymptotic limits are established by the written proof; finite computations are consistency checks. This version does not claim proof-assistant verification or external peer review. The scope is fixed parameters r = 2 and r = 3, and an exhaustive priority search is not claimed.
+The original r=2,3 manuscript remains unchanged. The extension covers every fixed integer r>=1, with r=0 exact. Neither gives uniform estimates in a growing parameter, nor claims proof-assistant certification, independent human peer review or an exhaustive priority search.
+
+The proofs and explicit external inputs establish the asymptotic limits. Historical finite computations check only their stated finite ranges. No new mathematical computation was performed in preparing this extension.
