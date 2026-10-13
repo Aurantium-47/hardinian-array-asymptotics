@@ -51,7 +51,7 @@ theorem right_deficit_scaled (m d : ℕ) (hd : m / 2 + d ≤ m) :
 /-- Both tails and both parities, with distance measured from the lower center. -/
 theorem deficit_scaled (m j : ℕ) (hj : j ≤ m) :
     (m : ℝ) * (1 - relativeMass m j) ≤
-      2 * (| (j : ℝ) - ((m / 2 : ℕ) : ℝ) | + 1) ^ 2 := by
+      2 * (|(j : ℝ) - ((m / 2 : ℕ) : ℝ)| + 1) ^ 2 := by
   by_cases hc : m / 2 ≤ j
   · have heq : m / 2 + (j - m / 2) = j := by omega
     have hb := right_deficit_scaled m (j - m / 2) (by omega)
@@ -75,7 +75,7 @@ theorem deficit_scaled (m j : ℕ) (hj : j ≤ m) :
 theorem binomial_relative_error (m j : ℕ) (hm : 1 ≤ m) (hj : j ≤ m) :
     0 ≤ 1 - binomialMass m j / centralMass m ∧
       1 - binomialMass m j / centralMass m ≤
-        2 * (| (j : ℝ) - ((m / 2 : ℕ) : ℝ) | + 1) ^ 2 / (m : ℝ) := by
+        2 * (|(j : ℝ) - ((m / 2 : ℕ) : ℝ)| + 1) ^ 2 / (m : ℝ) := by
   have hm0 : (0 : ℝ) < m := by exact_mod_cast (show 0 < m by omega)
   constructor
   · exact sub_nonneg.mpr (relativeMass_le_one m j)
