@@ -1,0 +1,12 @@
+name = "hardinian_kernel"
+version = "0.0.1"
+defaultTargets = ["Hardinian"]
+
+[[lean_lib]]
+name = "Hardinian"
+moreLeanArgs = ["-j", "1", "-s", "131072", "-DElab.async=false"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "c44e0c8ee63ca166450922a373c7409c5d26b00b"
