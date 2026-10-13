@@ -8,11 +8,11 @@ import Mathlib.Tactic.Ring
 
 namespace Hardinian
 
-def binomialMass (m j : ℕ) : ℝ := (m.choose j : ℝ) / 2 ^ m
+noncomputable def binomialMass (m j : ℕ) : ℝ := (m.choose j : ℝ) / 2 ^ m
 
-def centralMass (m : ℕ) : ℝ := binomialMass m (m / 2)
+noncomputable def centralMass (m : ℕ) : ℝ := binomialMass m (m / 2)
 
-def relativeMass (m j : ℕ) : ℝ := binomialMass m j / centralMass m
+noncomputable def relativeMass (m j : ℕ) : ℝ := binomialMass m j / centralMass m
 
 theorem centralMass_pos (m : ℕ) : 0 < centralMass m := by
   unfold centralMass binomialMass
