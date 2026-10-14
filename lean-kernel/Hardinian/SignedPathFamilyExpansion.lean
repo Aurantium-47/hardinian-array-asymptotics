@@ -96,11 +96,13 @@ theorem gridPathMatrix_det_eq_signedFamilySum {k N : ℕ} (u v : Fin k → Fin (
 
 theorem pathTuple_card_zero {N : ℕ} (u v : Fin 0 → Fin (N + 1))
     (σ : Equiv.Perm (Fin 0)) : Nat.card (PathTuple u v σ) = 1 := by
-  simp [pathTuple_card]
+  rw [pathTuple_card]
+  simp
 
 theorem signedFamily_card_zero {N : ℕ} (u v : Fin 0 → Fin (N + 1)) :
     Nat.card (SignedFamily u v) = 1 := by
-  simp [signedFamily_card]
+  rw [signedFamily_card]
+  simp
 
 theorem gridPathMatrix_det_zero {N : ℕ} (u v : Fin 0 → Fin (N + 1)) :
     (gridPathMatrix u v).det = 1 := Matrix.det_isEmpty
