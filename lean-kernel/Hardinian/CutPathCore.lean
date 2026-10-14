@@ -127,7 +127,7 @@ theorem boundaryPoint_isPath {u v : ℕ} (C : CutShape u v) :
   · exact shape_boundary_unique C _ _ (boundaryPoint_spec C 0).1
       (shape_source_boundary C) (boundaryPoint_spec C 0).2 (by simp)
   · exact shape_boundary_unique C _ _ (boundaryPoint_spec C (Fin.last (u + v))).1
-      (shape_sink_boundary C) (boundaryPoint_spec C (Fin.last (u + v))).2 (by simp)
+      (shape_sink_boundary C) (boundaryPoint_spec C (Fin.last (u + v))).2 (by simp [Nat.add_comm])
   · intro t
     obtain ⟨q, hq, hr, hs⟩ := shape_boundary_next C (boundaryPoint C t.castSucc)
       (boundaryPoint_spec C t.castSucc).1 (boundaryPoint_spec C t.castSucc).2 t.isLt
@@ -161,8 +161,10 @@ theorem gridPath_vertex_boundary {u v : ℕ} (P : GridPath u v) (t : Fin (u + v 
   rintro ⟨s, hs, ht⟩
   rcases le_total t s with hts | hst
   · have h := gridPath_row_antitone P hts
+    dsimp only at h
     omega
   · have h := gridPath_col_monotone P hst
+    dsimp only at h
     omega
 
 theorem pathCut_boundaryPath {u v : ℕ} (C : CutShape u v) : pathCutShape (boundaryPath C) = C := by
@@ -181,7 +183,9 @@ theorem pathCut_boundaryPath {u v : ℕ} (C : CutShape u v) : pathCutShape (boun
       by_contra hn
       exact (boundaryPoint_spec C t).1.2
         (C.2.2.2.1 i j _ _ (by omega) (by omega) h)
-    exact ⟨t, hi, by omega⟩
+    refine ⟨t, hi, ?_⟩
+    change j ≤ (boundaryPoint C t).2
+    omega
 
 theorem boundaryPath_pathCut {u v : ℕ} (P : GridPath u v) : boundaryPath (pathCutShape P) = P := by
   apply Subtype.ext
