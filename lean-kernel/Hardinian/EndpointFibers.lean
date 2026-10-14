@@ -71,7 +71,7 @@ theorem endpointEnum_image {k : ℕ} (u : EndpointIndex k) :
 theorem endpointSetOfIndex_enum {k : ℕ} (S : EndpointSet k) :
     endpointSetOfIndex (endpointEnum S) = S := by
   apply Subtype.ext
-  exact Finset.image_orderEmbOfFin_univ S.1 S.2
+  simpa only [endpointSetOfIndex, endpointEnum] using Finset.image_orderEmbOfFin_univ S.1 S.2
 
 noncomputable def endpointIndexSetEquiv (k : ℕ) : EndpointIndex k ≃ EndpointSet k where
   toFun := endpointSetOfIndex
@@ -118,18 +118,25 @@ theorem endpointPathFiber_finite {k : ℕ} (S T : EndpointSet k) :
   apply Finite.of_injective (fun P : EndpointPathFiber S T =>
     (familyEndpointFiberEquiv k).symm ⟨S, T, P⟩)
   intro P Q h
-  exact sigma_mk_injective (sigma_mk_injective ((familyEndpointFiberEquiv k).symm.injective h))
+  have hST := (familyEndpointFiberEquiv k).symm.injective h
+  have hT := sigma_mk_injective
+    (β := fun S : EndpointSet k => Σ T : EndpointSet k, EndpointPathFiber S T) (i := S) hST
+  exact sigma_mk_injective (β := fun T : EndpointSet k => EndpointPathFiber S T) (i := T) hT
 
 theorem family_card_eq_endpoint_fiber_sum (k : ℕ) :
     Nat.card (OrderedPathFamily k) =
       ∑ S : EndpointSet k, ∑ T : EndpointSet k, Nat.card (EndpointPathFiber S T) := by
   letI (S T : EndpointSet k) : Finite (EndpointPathFiber S T) := endpointPathFiber_finite S T
+  letI (S T : EndpointSet k) : Fintype (EndpointPathFiber S T) := Fintype.ofFinite _
   calc
     Nat.card (OrderedPathFamily k) = Nat.card (EndpointFiberFamily k) :=
       Nat.card_congr (familyEndpointFiberEquiv k)
+    _ = ∑ S : EndpointSet k, Nat.card (Σ T : EndpointSet k, EndpointPathFiber S T) :=
+      Nat.card_sigma
     _ = ∑ S : EndpointSet k, ∑ T : EndpointSet k, Nat.card (EndpointPathFiber S T) := by
-      unfold EndpointFiberFamily
-      simp only [Nat.card_sigma]
+      apply Finset.sum_congr rfl
+      intro S hS
+      exact Nat.card_sigma
 
 theorem endpointSet_zero_eq (S : EndpointSet 0) : S.1 = ∅ :=
   Finset.card_eq_zero.mp S.2
