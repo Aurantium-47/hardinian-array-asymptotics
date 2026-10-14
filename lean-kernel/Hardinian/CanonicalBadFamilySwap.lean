@@ -264,6 +264,7 @@ theorem badSwap_ne_self {k N : ℕ} {u v : Fin k → Fin (N + 1)} (B : BadFamily
     badSwap B ≠ B := by
   intro h
   have hm := congrArg (fun C : BadFamily u v => canonicalMark C) h
+  change canonicalMark (badSwap B) = canonicalMark B at hm
   rw [canonicalMark_after_swap] at hm
   exact markedSwap_ne_self (canonicalMark B) hm
 
