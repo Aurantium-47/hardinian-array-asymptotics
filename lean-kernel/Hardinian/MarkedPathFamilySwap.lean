@@ -10,6 +10,13 @@ theorem pathVertex_of_lt {u v : ℕ} (P : GridPath u v) (t : ℕ) (h : t < u + v
     pathVertex P t = some (P.1 ⟨t, h⟩) := by
   simp only [pathVertex, dif_pos h]
 
+def pathTransport {u v w : ℕ} (h : v = w) (P : GridPath u v) : GridPath u w := h ▸ P
+
+theorem pathVertex_transport {u v w : ℕ} (h : v = w) (P : GridPath u v) (t : ℕ) :
+    pathVertex (pathTransport h P) t = pathVertex P t := by
+  subst w
+  rfl
+
 theorem pathVertex_splice {u v u' v' : ℕ} (P : GridPath u v) (Q : GridPath u' v')
     (a : Fin (u + v + 1)) (b : Fin (u' + v' + 1)) (h : P.1 a = Q.1 b) (t : ℕ) :
     pathVertex (gridPathSplice P Q a b h) t =
@@ -46,7 +53,6 @@ theorem familyVisits_iff_vertex {k N : ℕ} {u v : Fin k → Fin (N + 1)}
     unfold familyVertex pathVertex at ht
     split_ifs at ht with h
     · exact ⟨⟨t, h⟩, Option.some.inj ht⟩
-    · cases ht
 
 theorem signedFamily_vertex_ext {k N : ℕ} {u v : Fin k → Fin (N + 1)}
     (F G : SignedFamily u v) (hσ : F.1 = G.1)
@@ -101,15 +107,16 @@ def markedSwapTuple {k N : ℕ} {u v : Fin k → Fin (N + 1)} (M : MarkedFamily 
   intro i
   by_cases hi : i = M.left
   · subst i
-    simpa only [Equiv.Perm.mul_apply, Equiv.swap_apply_left] using
-      gridPathSplice (M.family.2 M.left) (M.family.2 M.right)
-        (markedLeftCut M) (markedRightCut M) M.meet
+    exact pathTransport (by simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_left])
+      (gridPathSplice (M.family.2 M.left) (M.family.2 M.right)
+        (markedLeftCut M) (markedRightCut M) M.meet)
   · by_cases hj : i = M.right
     · subst i
-      simpa only [Equiv.Perm.mul_apply, Equiv.swap_apply_right] using
-        gridPathSplice (M.family.2 M.right) (M.family.2 M.left)
-          (markedRightCut M) (markedLeftCut M) M.meet.symm
-    · simpa only [Equiv.Perm.mul_apply, Equiv.swap_apply_of_ne_of_ne hi hj] using M.family.2 i
+      exact pathTransport (by simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_right])
+        (gridPathSplice (M.family.2 M.right) (M.family.2 M.left)
+          (markedRightCut M) (markedLeftCut M) M.meet.symm)
+    · exact pathTransport (by simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_of_ne_of_ne hi hj])
+        (M.family.2 i)
 
 def markedSwapFamily {k N : ℕ} {u v : Fin k → Fin (N + 1)} (M : MarkedFamily u v) :
     SignedFamily u v := ⟨M.family.1 * Equiv.swap M.left M.right, markedSwapTuple M⟩
@@ -130,17 +137,17 @@ theorem markedSwapFamily_vertex {k N : ℕ} {u v : Fin k → Fin (N + 1)}
   by_cases hi : i = M.left
   · subst i
     simpa [markedSwapFamily, markedSwapTuple, familyVertex, Equiv.Perm.mul_apply,
-      markedLeftCut, markedRightCut] using
+      markedLeftCut, markedRightCut, pathVertex_transport] using
       pathVertex_splice (M.family.2 M.left) (M.family.2 M.right)
         (markedLeftCut M) (markedRightCut M) M.meet t
   · by_cases hj : i = M.right
     · subst i
       simpa [markedSwapFamily, markedSwapTuple, familyVertex, Equiv.Perm.mul_apply,
-        markedLeftCut, markedRightCut, hi] using
+        markedLeftCut, markedRightCut, hi, pathVertex_transport] using
         pathVertex_splice (M.family.2 M.right) (M.family.2 M.left)
           (markedRightCut M) (markedLeftCut M) M.meet.symm t
     · simp [markedSwapFamily, markedSwapTuple, familyVertex, Equiv.Perm.mul_apply,
-        Equiv.swap_apply_of_ne_of_ne hi hj, hi, hj]
+        Equiv.swap_apply_of_ne_of_ne hi hj, hi, hj, pathVertex_transport]
 
 theorem markedSwapFamily_cut_left {k N : ℕ} {u v : Fin k → Fin (N + 1)}
     (M : MarkedFamily u v) :
@@ -201,8 +208,11 @@ theorem markedSwap_vertex {k N : ℕ} {u v : Fin k → Fin (N + 1)}
 theorem markedSwap_point {k N : ℕ} {u v : Fin k → Fin (N + 1)} (M : MarkedFamily u v) :
     markedPoint (markedSwap M) = markedPoint M := by
   apply Option.some.inj
-  have h := markedSwapFamily_cut_left M
-  simpa only [familyVertex, pathVertex, dif_pos (markedSwap M).leftLegal] using h
+  have hl : M.leftTime < (u M.left).val + (v ((markedSwapFamily M).1 M.left)).val + 1 :=
+    (markedSwap M).leftLegal
+  change some (((markedSwapFamily M).2 M.left).1 ⟨M.leftTime, hl⟩) = some (markedPoint M)
+  exact (pathVertex_of_lt ((markedSwapFamily M).2 M.left) M.leftTime hl).symm.trans
+    (markedSwapFamily_cut_left M)
 
 theorem markedSwap_other_vertex {k N : ℕ} {u v : Fin k → Fin (N + 1)}
     (M : MarkedFamily u v) (i : Fin k) (hi : i ≠ M.left) (hj : i ≠ M.right) (t : ℕ) :
@@ -220,14 +230,14 @@ theorem markedSwap_twice_vertex {k N : ℕ} {u v : Fin k → Fin (N + 1)}
     by_cases ht : t ≤ M.leftTime
     · simp [ht, hij, hij.symm]
     · have hb : ¬ M.rightTime + (t - M.leftTime) ≤ M.rightTime := by omega
-      have he : M.leftTime + (M.rightTime + (t - M.leftTime) - M.rightTime) = t := by omega
+      have he : M.leftTime + (t - M.leftTime) = t := by omega
       simp [ht, hij, hij.symm, hb, he]
   · by_cases hj : i = M.right
     · subst i
       by_cases ht : t ≤ M.rightTime
       · simp [ht, hij, hij.symm]
       · have ha : ¬ M.leftTime + (t - M.rightTime) ≤ M.leftTime := by omega
-        have he : M.rightTime + (M.leftTime + (t - M.rightTime) - M.leftTime) = t := by omega
+        have he : M.rightTime + (t - M.rightTime) = t := by omega
         simp [ht, hij, hij.symm, ha, he]
     · simp [hi, hj]
 
@@ -235,7 +245,7 @@ theorem markedSwap_family_involutive {k N : ℕ} {u v : Fin k → Fin (N + 1)}
     (M : MarkedFamily u v) : (markedSwap (markedSwap M)).family = M.family := by
   apply signedFamily_vertex_ext
   · change (M.family.1 * Equiv.swap M.left M.right) * Equiv.swap M.left M.right = M.family.1
-    exact Equiv.Perm.mul_swap_involutive M.left M.right M.family.1
+    exact Equiv.mul_swap_involutive M.left M.right M.family.1
   · exact markedSwap_twice_vertex M
 
 theorem markedSwap_involutive {k N : ℕ} {u v : Fin k → Fin (N + 1)} :
@@ -261,7 +271,7 @@ theorem markedSwap_ne_self {k N : ℕ} {u v : Fin k → Fin (N + 1)} (M : Marked
   intro h
   have hp := congrArg (fun L : MarkedFamily u v => L.family.1) h
   change M.family.1 * Equiv.swap M.left M.right = M.family.1 at hp
-  exact (ne_of_lt M.ordered) (Equiv.Perm.mul_swap_eq_iff.mp hp)
+  exact (ne_of_lt M.ordered) (Equiv.mul_swap_eq_iff.mp hp)
 
 theorem markedSwap_prefix_forward {k N : ℕ} {u v : Fin k → Fin (N + 1)}
     (M : MarkedFamily u v) (i : Fin k) (p : ℕ × ℕ)
@@ -275,20 +285,22 @@ theorem markedSwap_prefix_forward {k N : ℕ} {u v : Fin k → Fin (N + 1)}
   by_cases hi : i = M.left
   · subst i
     have hg := gridPath_grade ((markedSwap M).family.2 M.left) t
-    have ha := gridPath_grade (M.family.2 M.left) (markedLeftCut M)
+    have ha : gridGrade (markedPoint M) = (M.leftTime : ℤ) - ((u M.left).val : ℤ) :=
+      gridPath_grade (M.family.2 M.left) (markedLeftCut M)
     rw [ht] at hg
-    change gridGrade p ≤ gridGrade ((M.family.2 M.left).1 (markedLeftCut M)) at hp
-    have hb : t.val ≤ M.leftTime := by dsimp only [markedLeftCut] at ha; omega
+    have hb : t.val ≤ M.leftTime := by omega
     rw [markedSwap_vertex] at hv
     simpa only [if_pos rfl, if_pos hb] using hv
   · by_cases hj : i = M.right
     · subst i
       have hg := gridPath_grade ((markedSwap M).family.2 M.right) t
-      have ha := gridPath_grade (M.family.2 M.right) (markedRightCut M)
+      have ha : gridGrade ((M.family.2 M.right).1 (markedRightCut M)) =
+          (M.rightTime : ℤ) - ((u M.right).val : ℤ) :=
+        gridPath_grade (M.family.2 M.right) (markedRightCut M)
       rw [ht] at hg
       have hp' : gridGrade p ≤ gridGrade ((M.family.2 M.right).1 (markedRightCut M)) := by
         simpa only [markedPoint, markedLeftCut, markedRightCut, M.meet] using hp
-      have hb : t.val ≤ M.rightTime := by dsimp only [markedRightCut] at ha; omega
+      have hb : t.val ≤ M.rightTime := by omega
       rw [markedSwap_vertex] at hv
       simpa only [if_neg hi, if_pos rfl, if_pos hb] using hv
     · rw [markedSwap_other_vertex M i hi hj] at hv
