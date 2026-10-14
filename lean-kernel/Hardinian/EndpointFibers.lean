@@ -71,7 +71,16 @@ theorem endpointEnum_image {k : ℕ} (u : EndpointIndex k) :
 theorem endpointSetOfIndex_enum {k : ℕ} (S : EndpointSet k) :
     endpointSetOfIndex (endpointEnum S) = S := by
   apply Subtype.ext
-  simpa only [endpointSetOfIndex, endpointEnum] using Finset.image_orderEmbOfFin_univ S.1 S.2
+  apply Finset.ext
+  intro x
+  change x ∈ Finset.univ.image (endpointEnum S) ↔ x ∈ S.1
+  constructor
+  · intro hx
+    obtain ⟨t, _, rfl⟩ := Finset.mem_image.mp hx
+    exact Finset.orderEmbOfFin_mem S.1 S.2 t
+  · intro hx
+    obtain ⟨t, ht⟩ := (S.1.orderIsoOfFin S.2).surjective ⟨x, hx⟩
+    exact Finset.mem_image.mpr ⟨t, Finset.mem_univ t, congrArg Subtype.val ht⟩
 
 noncomputable def endpointIndexSetEquiv (k : ℕ) : EndpointIndex k ≃ EndpointSet k where
   toFun := endpointSetOfIndex
