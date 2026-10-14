@@ -1,4 +1,4 @@
-name: Hardinian finite binomial kernel
+name: Hardinian central binomial mass
 
 'on':
   push:
@@ -18,7 +18,7 @@ jobs:
       LEAN_NUM_THREADS: '1'
       MATHLIB_NO_CACHE_ON_UPDATE: '1'
     steps:
-      - name: Fixed setup and two fresh modules under one bounded guard
+      - name: Fixed setup and central mass under the unchanged bounded guard
         shell: bash
         run: |
           set -euo pipefail
@@ -36,7 +36,7 @@ jobs:
           assert shutil.disk_usage('.').free >= 10 * 1024**3, 'Insufficient disk; do not prune'
           def available():
               return int(re.search(r'^MemAvailable:\s+(\d+)', pathlib.Path('/proc/meminfo').read_text(), re.M)[1]) * 1024
-
+          
           def group_memory(group):
               rss, swap = 0, 0
               for directory in pathlib.Path('/proc').iterdir():
@@ -53,17 +53,17 @@ jobs:
                   except (FileNotFoundError, ProcessLookupError):
                       continue
               return rss, swap
-
+          
           def stop(group):
               try: os.killpg(group, signal.SIGKILL)
               except ProcessLookupError: pass
-
+          
           def sha(path):
               h = hashlib.sha256()
               with path.open('rb') as stream:
                   for chunk in iter(lambda: stream.read(1024 * 1024), b''): h.update(chunk)
               return h.hexdigest()
-
+          
           def run(args, label, seconds=180):
               assert available() >= 8 * 1024**3, 'Command preflight failed; stop without retry'
               assert time.monotonic() - build_start < 1200, 'Total build budget exhausted'
@@ -98,11 +98,11 @@ jobs:
               text = log.read_text(errors='replace')
               assert not re.search(r"declaration uses ['`]sorry|\bsorryAx\b", text), 'Unfinished declaration'
               return text
-
+          
           baseline = '45fd0805e05e61f7895123d11a57624db4ff4593'
-          expected = {'lean-kernel/Hardinian/BinomialMass.lean': 'fdd93513358abc6fa8c171232379ca22f121fb4065fb3529add61b3d389df34e', 'lean-kernel/Hardinian/KernelError.lean': 'a4e11f5c23f734204703c23a21c0cb44c95544e5808653a73a67ae662e5edf4f', 'lean-kernel/lake-manifest.json': 'e92da7f1c0b34814a1dd9612b7e7acd5975f160e684aa083155a90f508f0c399', 'lean-kernel/lakefile.toml': '0cc96780cc0c6d8becc99ab339c8aefa57035cf12e09f80c18b4d0c977eeb6ab', 'lean-kernel/lean-toolchain': 'f28855f24b5253d7e8949f38027066a06cdde238520086d421ba7ad24c27a691'}
-          own = ['Hardinian.BinomialMass', 'Hardinian.KernelError']
-          expected_names = ['Hardinian.binomialMass', 'Hardinian.centralMass', 'Hardinian.relativeMass', 'Hardinian.centralMass_pos', 'Hardinian.relativeMass_eq_choose_ratio', 'Hardinian.relativeMass_nonneg', 'Hardinian.relativeMass_le_one', 'Hardinian.relativeMass_center', 'Hardinian.relativeMass_symm', 'Hardinian.relativeMass_step', 'Hardinian.relativeMass_product', 'Hardinian.right_deficit_scaled', 'Hardinian.deficit_scaled', 'Hardinian.binomial_relative_error']
+          expected = {'lean-kernel/Hardinian/BinomialMass.lean': 'fdd93513358abc6fa8c171232379ca22f121fb4065fb3529add61b3d389df34e', 'lean-kernel/Hardinian/KernelError.lean': 'a4e11f5c23f734204703c23a21c0cb44c95544e5808653a73a67ae662e5edf4f', 'lean-kernel/lake-manifest.json': 'e92da7f1c0b34814a1dd9612b7e7acd5975f160e684aa083155a90f508f0c399', 'lean-kernel/lakefile.toml': '0cc96780cc0c6d8becc99ab339c8aefa57035cf12e09f80c18b4d0c977eeb6ab', 'lean-kernel/lean-toolchain': 'f28855f24b5253d7e8949f38027066a06cdde238520086d421ba7ad24c27a691', 'lean-kernel/Hardinian/CentralMassWallis.lean': 'db9d14b560158e2b161341e62eb8f81832f081246b848650d83c31283f7ea0e8', 'lean-kernel/Hardinian/CentralMassLimit.lean': 'a3bdb565c1de4520b77f2c36d743044fdba2288d401339c14d721cfa1f318607'}
+          own = ['Hardinian.BinomialMass', 'Hardinian.CentralMassWallis', 'Hardinian.CentralMassLimit']
+          expected_names = ['Hardinian.binomialMass', 'Hardinian.centralMass', 'Hardinian.centralMass_pos', 'Hardinian.centralMass_even', 'Hardinian.centralMass_odd', 'Hardinian.centralMass_wallis_identity', 'Hardinian.centralMass_even_square', 'Hardinian.centralMass_odd_square', 'Hardinian.odd_central_factor_tendsto', 'Hardinian.centralMass_even_square_tendsto', 'Hardinian.centralMass_odd_square_tendsto', 'Hardinian.tendsto_of_even_and_odd', 'Hardinian.centralMass_square_tendsto', 'Hardinian.centralMass_tendsto']
           workflow = '.github/workflows/hardinian-kernel-spine.yml'
           source = root / 'public-source'
           assert not source.exists()
@@ -156,8 +156,8 @@ jobs:
           helper.write_text(helper_text)
           assert sha(helper) == '646fed31a48d85ed75746ec09d06c23f5abdaca455518b6760b0dcb2b10c47c0'
           print('CACHE_HELPER_PATCH_SHA256', sha(helper), flush=True)
-          print('CACHE_ROOTS', ['Mathlib.Data.Nat.Choose.Basic', 'Mathlib.Data.Real.Basic', 'Mathlib.Algebra.BigOperators.Group.Finset.Basic', 'Mathlib.Tactic.Positivity', 'Mathlib.Tactic.NormNum', 'Mathlib.Tactic.Linarith', 'Mathlib.Tactic.Ring'], flush=True)
-          run([lake, 'exe', 'cache', 'get'] + ['Mathlib.Data.Nat.Choose.Basic', 'Mathlib.Data.Real.Basic', 'Mathlib.Algebra.BigOperators.Group.Finset.Basic', 'Mathlib.Tactic.Positivity', 'Mathlib.Tactic.NormNum', 'Mathlib.Tactic.Linarith', 'Mathlib.Tactic.Ring'], 'fixed-import-caches', 900)
+          print('CACHE_ROOTS', ['Mathlib.Data.Nat.Choose.Basic', 'Mathlib.Data.Real.Basic', 'Mathlib.Algebra.BigOperators.Group.Finset.Basic', 'Mathlib.Tactic.Positivity', 'Mathlib.Tactic.NormNum', 'Mathlib.Tactic.Linarith', 'Mathlib.Tactic.Ring', 'Mathlib.Analysis.SpecialFunctions.Stirling', 'Mathlib.Tactic.FieldSimp'], flush=True)
+          run([lake, 'exe', 'cache', 'get'] + ['Mathlib.Data.Nat.Choose.Basic', 'Mathlib.Data.Real.Basic', 'Mathlib.Algebra.BigOperators.Group.Finset.Basic', 'Mathlib.Tactic.Positivity', 'Mathlib.Tactic.NormNum', 'Mathlib.Tactic.Linarith', 'Mathlib.Tactic.Ring', 'Mathlib.Analysis.SpecialFunctions.Stirling', 'Mathlib.Tactic.FieldSimp'], 'fixed-import-caches', 900)
           libraries = [root / 'fresh-kernel/lib']
           assert not libraries[0].exists()
           libraries[0].mkdir(parents=True)
@@ -186,7 +186,7 @@ jobs:
               print('SOURCE_SHA256', name, sha(path), 'OLEAN_SHA256', sha(target), flush=True)
           probe = root / 'FreshHardinianAudit.lean'
           assert not probe.exists()
-          probe.write_text('import Hardinian.BinomialMass\nimport Hardinian.KernelError\n\nset_option pp.all true\n#print Hardinian.binomialMass\n#print Hardinian.centralMass\n#print Hardinian.relativeMass\n#check @Hardinian.binomialMass\n#print axioms Hardinian.binomialMass\n#check @Hardinian.centralMass\n#print axioms Hardinian.centralMass\n#check @Hardinian.relativeMass\n#print axioms Hardinian.relativeMass\n#check @Hardinian.centralMass_pos\n#print axioms Hardinian.centralMass_pos\n#check @Hardinian.relativeMass_eq_choose_ratio\n#print axioms Hardinian.relativeMass_eq_choose_ratio\n#check @Hardinian.relativeMass_nonneg\n#print axioms Hardinian.relativeMass_nonneg\n#check @Hardinian.relativeMass_le_one\n#print axioms Hardinian.relativeMass_le_one\n#check @Hardinian.relativeMass_center\n#print axioms Hardinian.relativeMass_center\n#check @Hardinian.relativeMass_symm\n#print axioms Hardinian.relativeMass_symm\n#check @Hardinian.relativeMass_step\n#print axioms Hardinian.relativeMass_step\n#check @Hardinian.relativeMass_product\n#print axioms Hardinian.relativeMass_product\n#check @Hardinian.right_deficit_scaled\n#print axioms Hardinian.right_deficit_scaled\n#check @Hardinian.deficit_scaled\n#print axioms Hardinian.deficit_scaled\n#check @Hardinian.binomial_relative_error\n#print axioms Hardinian.binomial_relative_error\n')
+          probe.write_text('import Hardinian.BinomialMass\nimport Hardinian.CentralMassWallis\nimport Hardinian.CentralMassLimit\n\nset_option pp.all true\n#print Hardinian.binomialMass\n#print Hardinian.centralMass\n#check @Hardinian.binomialMass\n#print axioms Hardinian.binomialMass\n#check @Hardinian.centralMass\n#print axioms Hardinian.centralMass\n#check @Hardinian.centralMass_pos\n#print axioms Hardinian.centralMass_pos\n#check @Hardinian.centralMass_even\n#print axioms Hardinian.centralMass_even\n#check @Hardinian.centralMass_odd\n#print axioms Hardinian.centralMass_odd\n#check @Hardinian.centralMass_wallis_identity\n#print axioms Hardinian.centralMass_wallis_identity\n#check @Hardinian.centralMass_even_square\n#print axioms Hardinian.centralMass_even_square\n#check @Hardinian.centralMass_odd_square\n#print axioms Hardinian.centralMass_odd_square\n#check @Hardinian.odd_central_factor_tendsto\n#print axioms Hardinian.odd_central_factor_tendsto\n#check @Hardinian.centralMass_even_square_tendsto\n#print axioms Hardinian.centralMass_even_square_tendsto\n#check @Hardinian.centralMass_odd_square_tendsto\n#print axioms Hardinian.centralMass_odd_square_tendsto\n#check @Hardinian.tendsto_of_even_and_odd\n#print axioms Hardinian.tendsto_of_even_and_odd\n#check @Hardinian.centralMass_square_tendsto\n#print axioms Hardinian.centralMass_square_tendsto\n#check @Hardinian.centralMass_tendsto\n#print axioms Hardinian.centralMass_tendsto\n')
           print('PROBE_SHA256', sha(probe), flush=True)
           imports = run([lean, '--deps', str(probe)], 'actual-imports', 60)
           deps = [pathlib.Path(s.strip()).resolve() for s in imports.splitlines() if s.strip()]
@@ -212,13 +212,7 @@ jobs:
           subprocess.run(['git', '-C', str(source), 'diff', '--exit-code', 'HEAD', '--'], check=True)
           assert time.monotonic() - build_start <= 1200
           print('TOTAL_ELAPSED_SECONDS', time.monotonic() - build_start, flush=True)
-          print('PASS: two fresh modules, two direct fresh imports, all fourteen declaration types and transitive axioms verified.', flush=True)
-          print('SCOPE: actual finite binomial product and uniform finite relative error only; no Stirling limit, full log-window theorem, or Hardinian array asymptotic is claimed.', flush=True)
+          print('PASS: three fresh modules (one unchanged dependency and two new mathematical modules), three direct fresh imports, all fourteen declaration types and transitive axioms verified.', flush=True)
+          print('SCOPE: the actual central binomial mass satisfies sqrt(pi*m/2)*centralMass(m) -> 1 along all natural indices, with exact even/odd identities. Moving logarithmic windows and Hardinian array asymptotics remain open.', flush=True)
           print('TRUST: fixed external olean caches and the same Lean kernel; no external-source rebuild or independent-kernel replay.', flush=True)
           PY
-      - name: Final runner resources
-        if: always()
-        shell: bash
-        run: |
-          free -b
-          df -B1 .
