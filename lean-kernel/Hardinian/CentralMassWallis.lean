@@ -22,7 +22,8 @@ theorem centralMass_odd (n : ℕ) :
   have hp : (2 : ℝ) ^ (2 * n) ≠ 0 := by positivity
   have hd : 2 * (n : ℝ) + 2 ≠ 0 := by positivity
   simp only [centralMass, binomialMass, he, ho, pow_add, pow_one]
-  field_simp [hp, hd] <;> nlinarith [hc]
+  field_simp [hp, hd]
+  nlinarith only [congrArg (fun x : ℝ => x * ((2 : ℝ) ^ (2 * n) * 2)) hc]
 
 theorem centralMass_wallis_identity (n : ℕ) :
     centralMass (2 * n) ^ 2 * (2 * (n : ℝ) + 1) * Real.Wallis.W n = 1 := by
