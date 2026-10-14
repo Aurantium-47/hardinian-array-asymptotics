@@ -91,7 +91,7 @@ theorem gridPathMatrix_det_eq_identityDisjoint_card {k N : ℕ}
 
 theorem ordered_grid_lgv_zero {N : ℕ} (u v : Fin 0 → Fin (N + 1)) :
     (gridPathMatrix u v).det = (Nat.card (IdentityDisjointFamily u v) : ℤ) := by
-  rw [gridPathMatrix_det_zero, identityDisjointFamily_zero_card]
+  rw [gridPathMatrix_det_zero, identityDisjointFamily_zero_card, Nat.cast_one]
 
 theorem ordered_grid_lgv_one {N : ℕ} (u v : Fin 1 → Fin (N + 1)) :
     (gridPathMatrix u v).det = (Nat.card (IdentityDisjointFamily u v) : ℤ) := by
