@@ -31,9 +31,11 @@ theorem coefficientTwo_selected_column {k : ℕ}
     (x : Fin (k + 2)) (b : Fin 2) :
     coefficientTwo V I J x (select₂ J b) = V x (select₂ I b) := by
   fin_cases b
-  · simp only [coefficientTwo, Matrix.updateCol_ne (ne_of_lt (select₂_lt J)),
+  · change coefficientTwo V I J x (select₂ J 0) = V x (select₂ I 0)
+    simp only [coefficientTwo, Matrix.updateCol_ne (ne_of_lt (select₂_lt J)),
       Matrix.updateCol_self]
-  · simp only [coefficientTwo, Matrix.updateCol_self]
+  · change coefficientTwo V I J x (select₂ J 1) = V x (select₂ I 1)
+    simp only [coefficientTwo, Matrix.updateCol_self]
 
 theorem coefficientTwo_other_column {k : ℕ}
     (V : Matrix (Fin (k + 2)) (Fin (k + 2)) ℤ) (I J : TwoSet (k + 2))
@@ -74,13 +76,13 @@ theorem coefficientTwo_eq_one_add_update {k : ℕ}
   · subst y
     rw [coefficientTwo_selected_column V I J x 0]
     simp only [updateDirections₂, selector₂, Matrix.one_apply, if_pos rfl,
-      if_neg (ne_of_lt (select₂_lt J)), mul_one, mul_zero, add_zero]
+      if_neg (ne_of_lt (select₂_lt J)), ite_true, mul_one, mul_zero, add_zero]
     ring
   · by_cases h1 : y = select₂ J 1
     · subst y
       rw [coefficientTwo_selected_column V I J x 1]
       simp only [updateDirections₂, selector₂, Matrix.one_apply, if_pos rfl,
-        if_neg (ne_of_gt (select₂_lt J)), mul_one, mul_zero, zero_add]
+        if_neg (ne_of_gt (select₂_lt J)), ite_true, mul_one, mul_zero, zero_add]
       ring
     · have hy : y ∉ J.val := by
         rw [mem_twoSet_iff]
