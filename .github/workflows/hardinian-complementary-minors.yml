@@ -100,7 +100,7 @@ jobs:
               return text
 
           baseline = 'fe2b2852c91de9a80d3b89ecdb7d6621713f940d'
-          expected = {'lean-kernel/Hardinian/ComplementaryMinorTwo.lean': '4ec021682f4d6b6574b1474b7be6d3b36484ce5bfdf7c883938105ce48f31673'}
+          expected = {'lean-kernel/Hardinian/ComplementaryMinorTwo.lean': '019822fb3edf7fbd95b1afc7e9bd963d0b7f8f0a5d78325309e1388bac94544d'}
           own = ['Hardinian.ComplementaryMinorTwo']
           expected_names = ['Hardinian.FiniteAlgebra.TwoSet', 'Hardinian.FiniteAlgebra.select₂', 'Hardinian.FiniteAlgebra.select₂_lt', 'Hardinian.FiniteAlgebra.mem_twoSet_iff', 'Hardinian.FiniteAlgebra.two_complement_card', 'Hardinian.FiniteAlgebra.omit₂', 'Hardinian.FiniteAlgebra.indexSum₂', 'Hardinian.FiniteAlgebra.high_ne_zero', 'Hardinian.FiniteAlgebra.highPred', 'Hardinian.FiniteAlgebra.lift_highPred', 'Hardinian.FiniteAlgebra.highPred_val', 'Hardinian.FiniteAlgebra.deleteTwice', 'Hardinian.FiniteAlgebra.deleteTwice_ne_low', 'Hardinian.FiniteAlgebra.deleteTwice_ne_high', 'Hardinian.FiniteAlgebra.deleteTwice_eq_omit', 'Hardinian.FiniteAlgebra.complement₂', 'Hardinian.FiniteAlgebra.replaceTwo', 'Hardinian.FiniteAlgebra.det_of_single_column', 'Hardinian.FiniteAlgebra.replaceTwo_first_column', 'Hardinian.FiniteAlgebra.high_single_after_delete', 'Hardinian.FiniteAlgebra.replaceTwo_second_column', 'Hardinian.FiniteAlgebra.replaceTwo_remaining_matrix', 'Hardinian.FiniteAlgebra.deletion_sign', 'Hardinian.FiniteAlgebra.det_replaceTwo_columns', 'Hardinian.FiniteAlgebra.complement₂_zero']
           workflow = '.github/workflows/hardinian-complementary-minors.yml'
