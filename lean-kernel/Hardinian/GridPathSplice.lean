@@ -43,7 +43,7 @@ def spliceVertex {u v u' v' : ℕ} (P : GridPath u v) (Q : GridPath u' v')
 theorem spliceVertex_prefix {u v u' v' : ℕ} (P : GridPath u v) (Q : GridPath u' v')
     (a : Fin (u + v + 1)) (b : Fin (u' + v' + 1)) (h : P.1 a = Q.1 b)
     (t : Fin (u + v' + 1)) (ht : t.val ≤ a.val) :
-    spliceVertex P Q a b h t = P.1 ⟨t.val, by have ha := a.isLt; omega⟩ := by
+    spliceVertex P Q a b h t = P.1 ⟨t.val, by omega⟩ := by
   simp only [spliceVertex, dif_pos ht]
 
 theorem spliceVertex_tail {u v u' v' : ℕ} (P : GridPath u v) (Q : GridPath u' v')
@@ -64,13 +64,19 @@ theorem spliceVertex_isPath {u v u' v' : ℕ} (P : GridPath u v) (Q : GridPath u
     exact P.2.1
   · by_cases ht : u + v' ≤ a.val
     · rw [spliceVertex_prefix P Q a b h (Fin.last (u + v')) ht]
-      have ea : (⟨u + v', by omega⟩ : Fin (u + v + 1)) = a := Fin.ext (by omega)
-      have eb : b = Fin.last (u' + v') := Fin.ext (by omega)
-      simpa only [ea, h, eb] using Q.2.2.1
+      change P.1 ⟨u + v', _⟩ = (0, v')
+      have ea : (⟨u + v', by omega⟩ : Fin (u + v + 1)) = a :=
+        Fin.ext (by change u + v' = a.val; omega)
+      have eb : b = Fin.last (u' + v') :=
+        Fin.ext (by change b.val = u' + v'; omega)
+      rw [ea, h, eb]
+      exact Q.2.2.1
     · rw [spliceVertex_tail P Q a b h (Fin.last (u + v')) ht]
+      change Q.1 ⟨b.val + (u + v' - a.val), _⟩ = (0, v')
       have eb : (⟨b.val + (u + v' - a.val), by omega⟩ : Fin (u' + v' + 1)) =
-          Fin.last (u' + v') := Fin.ext (by omega)
-      simpa only [eb] using Q.2.2.1
+          Fin.last (u' + v') := Fin.ext (by change b.val + (u + v' - a.val) = u' + v'; omega)
+      rw [eb]
+      exact Q.2.2.1
   · intro t
     have htt := t.isLt
     by_cases hn : t.val + 1 ≤ a.val
@@ -81,15 +87,21 @@ theorem spliceVertex_isPath {u v u' v' : ℕ} (P : GridPath u v) (Q : GridPath u
     · by_cases hc : t.val ≤ a.val
       · rw [spliceVertex_prefix P Q a b h t.castSucc hc,
           spliceVertex_tail P Q a b h t.succ hn]
-        have ea : (⟨t.val, by omega⟩ : Fin (u + v + 1)) = a := Fin.ext (by omega)
+        change GridStep (P.1 ⟨t.val, _⟩) (Q.1 ⟨b.val + (t.val + 1 - a.val), _⟩)
+        have ea : (⟨t.val, by omega⟩ : Fin (u + v + 1)) = a :=
+          Fin.ext (by change t.val = a.val; omega)
         have en : (⟨b.val + (t.val + 1 - a.val), by omega⟩ : Fin (u' + v' + 1)) =
-            (⟨b.val, by omega⟩ : Fin (u' + v')).succ := Fin.ext (by omega)
+            (⟨b.val, by omega⟩ : Fin (u' + v')).succ :=
+          Fin.ext (by change b.val + (t.val + 1 - a.val) = b.val + 1; omega)
         rw [ea, h, en]
         exact Q.2.2.2 ⟨b.val, by omega⟩
       · rw [spliceVertex_tail P Q a b h t.castSucc hc,
           spliceVertex_tail P Q a b h t.succ hn]
+        change GridStep (Q.1 ⟨b.val + (t.val - a.val), _⟩)
+          (Q.1 ⟨b.val + (t.val + 1 - a.val), _⟩)
         have en : (⟨b.val + (t.val + 1 - a.val), by omega⟩ : Fin (u' + v' + 1)) =
-            (⟨b.val + (t.val - a.val), by omega⟩ : Fin (u' + v')).succ := Fin.ext (by omega)
+            (⟨b.val + (t.val - a.val), by omega⟩ : Fin (u' + v')).succ :=
+          Fin.ext (by change b.val + (t.val + 1 - a.val) = b.val + (t.val - a.val) + 1; omega)
         rw [en]
         exact Q.2.2.2 ⟨b.val + (t.val - a.val), by omega⟩
 
@@ -124,9 +136,11 @@ theorem gridPathSplice_recover {u v u' v' : ℕ} (P : GridPath u v) (Q : GridPat
     (spliceCut P Q a b h) (spliceCut Q P b a h.symm)
     (gridPathSplice_meet P Q a b h) t = P.1 t
   by_cases ht : t.val ≤ a.val
-  · rw [spliceVertex_prefix _ _ _ _ _ t ht]
+  · rw [spliceVertex_prefix (gridPathSplice P Q a b h) (gridPathSplice Q P b a h.symm)
+      (spliceCut P Q a b h) (spliceCut Q P b a h.symm) (gridPathSplice_meet P Q a b h) t ht]
     exact spliceVertex_prefix P Q a b h _ ht
-  · rw [spliceVertex_tail _ _ _ _ _ t ht]
+  · rw [spliceVertex_tail (gridPathSplice P Q a b h) (gridPathSplice Q P b a h.symm)
+      (spliceCut P Q a b h) (spliceCut Q P b a h.symm) (gridPathSplice_meet P Q a b h) t ht]
     change spliceVertex Q P b a h.symm
       ⟨b.val + (t.val - a.val), _⟩ = P.1 t
     rw [spliceVertex_tail Q P b a h.symm _ (by dsimp only; omega)]
