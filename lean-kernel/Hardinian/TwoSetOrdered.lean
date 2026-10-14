@@ -33,7 +33,9 @@ noncomputable def twoSetOrderEquiv (m : ℕ) :
   left_inv I := twoSetOfLT_select₂ I
   right_inv p := by
     rcases p with ⟨u, v, h⟩
-    simp only [select₂_twoSetOfLT, Matrix.cons_val_zero, Matrix.cons_val_one]
+    apply Sigma.subtype_ext
+    · exact congrFun (select₂_twoSetOfLT u v h) 0
+    · exact congrFun (select₂_twoSetOfLT u v h) 1
 
 theorem sum_twoSet_eq_ordered (m : ℕ) (f : Fin m → Fin m → ℤ) :
     (∑ I : TwoSet m, f (select₂ I 0) (select₂ I 1)) =

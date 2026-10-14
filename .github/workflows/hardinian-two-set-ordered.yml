@@ -100,7 +100,7 @@ jobs:
               return text
           
           baseline = 'da565c51d3b907e00ed97342ace5a92b4519d601'
-          expected = {'lean-kernel/Hardinian/ComplementaryMinorTwo.lean': '019822fb3edf7fbd95b1afc7e9bd963d0b7f8f0a5d78325309e1388bac94544d', 'lean-kernel/Hardinian/TwoSetOrdered.lean': 'e23cb8e46b4df7ad57b6cee9638e98a52740498e363af32806a1b8dc9df14d27'}
+          expected = {'lean-kernel/Hardinian/ComplementaryMinorTwo.lean': '019822fb3edf7fbd95b1afc7e9bd963d0b7f8f0a5d78325309e1388bac94544d', 'lean-kernel/Hardinian/TwoSetOrdered.lean': 'f18cd4bd727260d7917ecbad1bbcf2e1e99014e55d645c3fc65f263fe7bbd852'}
           own = ['Hardinian.ComplementaryMinorTwo', 'Hardinian.TwoSetOrdered']
           expected_names = ['Hardinian.FiniteAlgebra.TwoSet', 'Hardinian.FiniteAlgebra.select₂', 'Hardinian.FiniteAlgebra.select₂_lt', 'Hardinian.FiniteAlgebra.mem_twoSet_iff', 'Hardinian.FiniteAlgebra.twoSetOfLT', 'Hardinian.FiniteAlgebra.select₂_twoSetOfLT', 'Hardinian.FiniteAlgebra.twoSetOfLT_select₂', 'Hardinian.FiniteAlgebra.twoSetOrderEquiv', 'Hardinian.FiniteAlgebra.sum_twoSet_eq_ordered', 'Hardinian.FiniteAlgebra.sum_twoSet_eq_zero_of_lt_two']
           workflow = '.github/workflows/hardinian-two-set-ordered.yml'
