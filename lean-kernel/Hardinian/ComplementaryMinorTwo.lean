@@ -115,7 +115,10 @@ theorem high_single_after_delete {k : ℕ} (I : TwoSet (k + 2)) (x : Fin (k + 1)
   classical
   by_cases h : x = highPred I
   · subst x
-    simp [lift_highPred]
+    rw [if_pos rfl]
+    exact (congrArg (fun y : Fin (k + 2) =>
+      (Pi.single (select₂ I 1) 1 : Fin (k + 2) → ℤ) y) (lift_highPred I)).trans
+        (Pi.single_eq_same (select₂ I 1) (1 : ℤ))
   · have h' : (select₂ I 0).succAbove x ≠ select₂ I 1 := by
       intro he
       exact h ((Fin.strictMono_succAbove (select₂ I 0)).injective
