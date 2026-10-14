@@ -57,6 +57,7 @@ theorem stepPrefixCount_succ {L : ℕ} (S : Finset (Fin L)) (t : Fin L) :
   · rw [if_neg ht, Nat.add_zero]
     unfold stepPrefixCount
     rw [stepPrefix_filter_succ_not_mem S t ht]
+    simp only [Nat.add_zero]
 
 theorem stepPrefixCount_le_index {L : ℕ} (S : Finset (Fin L)) (m : ℕ) (hm : m ≤ L) :
     stepPrefixCount S m ≤ m := by
@@ -180,8 +181,11 @@ def gridPathStepPositionsEquiv (u v : ℕ) : GridPath u v ≃ UpStepSet u v wher
   left_inv := stepSetPath_upSteps
   right_inv := upSteps_stepSetPath
 
-theorem gridPath_finite (u v : ℕ) : Finite (GridPath u v) :=
-  Finite.of_injective (gridPathStepPositionsEquiv u v) (gridPathStepPositionsEquiv u v).injective
+theorem gridPath_finite (u v : ℕ) : Finite (GridPath u v) := by
+  letI : Finite (UpStepSet u v) := by
+    unfold UpStepSet
+    infer_instance
+  exact Finite.of_injective (gridPathStepPositionsEquiv u v) (gridPathStepPositionsEquiv u v).injective
 
 theorem gridPath_card (u v : ℕ) : Nat.card (GridPath u v) = Nat.choose (u + v) u := by
   calc
