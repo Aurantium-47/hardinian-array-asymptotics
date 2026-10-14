@@ -110,7 +110,7 @@ theorem replaceTwo_first_column {k : ℕ}
     Matrix.updateCol_self, Pi.single_apply, eq_comm]
 
 theorem high_single_after_delete {k : ℕ} (I : TwoSet (k + 2)) (x : Fin (k + 1)) :
-    (Pi.single (select₂ I 1) (1 : ℤ)) ((select₂ I 0).succAbove x) =
+    (Pi.single (select₂ I 1) 1 : Fin (k + 2) → ℤ) ((select₂ I 0).succAbove x) =
       if x = highPred I then 1 else 0 := by
   classical
   by_cases h : x = highPred I
