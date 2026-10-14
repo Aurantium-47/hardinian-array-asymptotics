@@ -105,7 +105,7 @@ theorem exists_weightedKernel_dominator :
         _ ≤ B * ((a : ℝ) + 1) * ((a : ℝ) + 1) ^ 2 :=
           mul_le_mul_of_nonneg_left hs (by positivity)
         _ = _ := by ring
-    simp only [weightedKernelTerm, h, if_true, kernelMajorant]
+    simp only [weightedKernelTerm, h, and_self, if_true, kernelMajorant]
     have hmul := mul_le_mul_of_nonneg_left hh (by positivity : (0 : ℝ) ≤ (1 / 4 : ℝ) ^ (a + b))
     nlinarith only [hmul]
   · simp only [weightedKernelTerm, h, if_false, kernelMajorant]
