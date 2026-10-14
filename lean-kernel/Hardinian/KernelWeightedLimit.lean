@@ -68,6 +68,7 @@ theorem fixed_offset_kernel_square_tendsto (a b : ℕ) (hba : b < a) :
         (((a : ℝ) - b) ^ 2 / Real.pi)
   apply h.congr'
   exact Eventually.of_forall fun N => by
+    dsimp only
     rw [div_pow, mul_pow, Real.sq_sqrt (by positivity)]
     field_simp [hd, Real.pi_ne_zero] <;> ring
 
