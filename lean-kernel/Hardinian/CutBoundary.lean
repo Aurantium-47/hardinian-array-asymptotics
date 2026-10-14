@@ -39,13 +39,17 @@ theorem lowerCutNat_lower {k : ℕ} (C : LowerCut k) (i j i' j' : ℕ)
 theorem lowerCutNat_bounds {k : ℕ} (C : LowerCut k) (i j : ℕ)
     (h : lowerCutNat C i j) : i ≤ k + 1 ∧ j ≤ k + 1 := by
   rcases h with ⟨a, b, rfl, rfl, hm⟩
-  constructor
-  · by_contra hn
-    have he : a = Fin.last (k + 2) := Fin.ext (by have ha := a.isLt; omega)
+  have hna : a.val ≠ k + 2 := by
+    intro ha
+    have he : a = Fin.last (k + 2) := Fin.ext (by change a.val = k + 2; exact ha)
     exact (C.2.2.2 b).1 (by simpa only [he] using hm)
-  · by_contra hn
-    have he : b = Fin.last (k + 2) := Fin.ext (by have hb := b.isLt; omega)
+  have hnb : b.val ≠ k + 2 := by
+    intro hb
+    have he : b = Fin.last (k + 2) := Fin.ext (by change b.val = k + 2; exact hb)
     exact (C.2.2.2 a).2 (by simpa only [he] using hm)
+  have ha := a.isLt
+  have hb := b.isLt
+  omega
 
 noncomputable def lowerCutU {k : ℕ} (C : LowerCut k) : Fin (k + 2) := by
   classical
@@ -59,11 +63,13 @@ noncomputable def lowerCutV {k : ℕ} (C : LowerCut k) : Fin (k + 2) := by
 
 theorem lowerCutU_mem {k : ℕ} (C : LowerCut k) : lowerCutNat C (lowerCutU C).val 0 := by
   classical
-  exact Nat.findGreatest_spec (Nat.zero_le (k + 1)) (lowerCutNat_origin C)
+  exact Nat.findGreatest_spec (P := fun i => lowerCutNat C i 0)
+    (Nat.zero_le (k + 1)) (lowerCutNat_origin C)
 
 theorem lowerCutV_mem {k : ℕ} (C : LowerCut k) : lowerCutNat C 0 (lowerCutV C).val := by
   classical
-  exact Nat.findGreatest_spec (Nat.zero_le (k + 1)) (lowerCutNat_origin C)
+  exact Nat.findGreatest_spec (P := fun j => lowerCutNat C 0 j)
+    (Nat.zero_le (k + 1)) (lowerCutNat_origin C)
 
 theorem lowerCutNat_endpoint_bounds {k : ℕ} (C : LowerCut k) (i j : ℕ)
     (h : lowerCutNat C i j) : i ≤ (lowerCutU C).val ∧ j ≤ (lowerCutV C).val := by
@@ -188,10 +194,14 @@ theorem zeroPathCut_singleton (k : ℕ) :
   · rintro ⟨t, hi, hj⟩
     change i.val ≤ 0 at hi
     change j.val ≤ 0 at hj
-    exact Prod.ext (Fin.ext (by omega)) (Fin.ext (by omega))
+    have hi0 : i = 0 := Fin.ext (by change i.val = 0; omega)
+    have hj0 : j = 0 := Fin.ext (by change j.val = 0; omega)
+    exact Prod.ext hi0 hj0
   · intro h
-    have hi := congrArg (fun p : Fin (k + 3) × Fin (k + 3) => p.1.val) h
-    have hj := congrArg (fun p : Fin (k + 3) × Fin (k + 3) => p.2.val) h
-    exact ⟨0, by change i.val ≤ 0; omega, by change j.val ≤ 0; omega⟩
+    have hi : i = 0 := congrArg Prod.fst h
+    have hj : j = 0 := congrArg Prod.snd h
+    subst i
+    subst j
+    exact ⟨0, le_rfl, le_rfl⟩
 
 end Hardinian
