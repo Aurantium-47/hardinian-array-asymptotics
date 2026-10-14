@@ -41,9 +41,10 @@ theorem fin_step_lipschitz (m : ℕ) (f : Fin (m + 1) → ℕ)
     apply Fin.monotone_iff_le_succ.mpr
     intro t
     have h := hf t
-    simp only [Fin.val_castSucc, Fin.val_succ, Nat.cast_add, Nat.cast_one]
+    change (t.val : ℤ) - (f t.castSucc : ℤ) ≤ ((t.val + 1 : ℕ) : ℤ) - (f t.succ : ℤ)
     omega
   have h := hg hij
+  dsimp only at h
   omega
 
 theorem array_steps_monotone (k : ℕ) (A : Fin (k + 3) → Fin (k + 3) → ℕ)
@@ -106,11 +107,11 @@ theorem isR2Array_iff_boundary (k : ℕ) (A : Fin (k + 3) → Fin (k + 3) → �
     have hm := array_steps_monotone k A hs
     have hbl : k ≤ A (Fin.last (k + 2)) 0 := by
       have h := (abs_le.mp (hb (Fin.last (k + 2)) 0)).1
-      simp only [Fin.val_last, Fin.val_zero, max_zero] at h
+      simp only [Fin.val_last, Fin.val_zero, max_eq_left (Nat.zero_le (k + 2))] at h
       omega
     have htr : k ≤ A 0 (Fin.last (k + 2)) := by
       have h := (abs_le.mp (hb 0 (Fin.last (k + 2)))).1
-      simp only [Fin.val_last, Fin.val_zero, zero_max] at h
+      simp only [Fin.val_last, Fin.val_zero, max_eq_right (Nat.zero_le (k + 2))] at h
       omega
     have hup (i j) : A i j ≤ k := by
       have h := hm i (Fin.last (k + 2)) j (Fin.last (k + 2)) (Fin.le_last i) (Fin.le_last j)
