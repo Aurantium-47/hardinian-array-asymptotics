@@ -168,6 +168,6 @@ theorem logFactorialCorrection_bounds (N : ℕ) (hN : 1 ≤ N) :
     0 ≤ logFactorialCorrection N ∧ logFactorialCorrection N ≤ 1 / (12 * (N : ℝ)) := by
   have h := logFactorialCorrection_remainder N 0 hN
   norm_num at h
-  exact h
+  simpa only [one_div, mul_inv_rev] using h
 
 end Hardinian

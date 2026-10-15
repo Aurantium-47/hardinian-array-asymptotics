@@ -100,7 +100,7 @@ jobs:
               return text
           
           baseline = 'db012557c10ee1c7d552811a128aee2fe28df8d2'
-          expected = {'lean-kernel/Hardinian/StirlingIncrementRemainder.lean': '9a805ee6d69e80b58ae9c17c64af3edf7cfbb9684d6b79c96d7a43d98ec1102d', 'lean-kernel/Hardinian/StirlingTailRemainder.lean': '234e9ceb69e1f73cd6b6bc46fcfedfebf8349cd3b114d0f0a46f996285efe28f'}
+          expected = {'lean-kernel/Hardinian/StirlingIncrementRemainder.lean': '9a805ee6d69e80b58ae9c17c64af3edf7cfbb9684d6b79c96d7a43d98ec1102d', 'lean-kernel/Hardinian/StirlingTailRemainder.lean': 'f7078a99889890bc02f427dd903c12c7d512e969a6eea77a803b5e3895acb2af'}
           own = ['Hardinian.StirlingIncrementRemainder', 'Hardinian.StirlingTailRemainder']
           expected_names = ['Hardinian.stirlingStepTerm', 'Hardinian.stirlingStepTerm_nonneg', 'Hardinian.stirling_ratio_bounds', 'Hardinian.stirling_ratio_geometric_identity', 'Hardinian.stirlingStep_hasSum', 'Hardinian.stirlingStep_summable', 'Hardinian.stirlingStep_tail_hasSum', 'Hardinian.stirlingStep_tail_term_le', 'Hardinian.stirlingStep_truncation_bounds', 'Hardinian.logFactorialCorrection', 'Hardinian.stirlingTailBlock', 'Hardinian.logFactorialCorrection_eq_stirling', 'Hardinian.reciprocal_telescope_step', 'Hardinian.reciprocal_telescope_hasSum', 'Hardinian.stirlingLogStep_tail_hasSum', 'Hardinian.stirlingTailBlock_summable', 'Hardinian.stirlingTailBlock_hasSum', 'Hardinian.logFactorialCorrection_remainder_hasSum', 'Hardinian.stirling_cumulative_term_bound', 'Hardinian.logFactorialCorrection_remainder', 'Hardinian.logFactorialCorrection_bounds']
           workflow = '.github/workflows/hardinian-stirling-tail.yml'
