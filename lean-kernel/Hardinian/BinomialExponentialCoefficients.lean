@@ -65,7 +65,8 @@ theorem binomialPositiveCompositions_zero_length (n : ℕ) (hn : 0 < n) :
     binomialPositiveCompositions n 0 = ∅ := by
   classical
   ext v
-  simp [binomialPositiveCompositions, binomialCompositionOrder, Nat.ne_of_gt hn]
+  simp [binomialPositiveCompositions, binomialCompositionOrder, Nat.ne_of_gt hn,
+    (by omega : (0 : ℕ) ≠ n)]
 
 theorem binomialPositiveCompositions_diagonal (n : ℕ) (hn : 0 < n) :
     binomialPositiveCompositions n n = {fun _ => (⟨0, hn⟩ : Fin n)} := by
@@ -228,7 +229,7 @@ theorem binomialExp_finite_collection (K : ℕ) (s t w : ℝ) :
     (fun a : Fin 2 => if a = 0 then s else t) (binomialLogCoeff i)
   have hbase : (∑ i ∈ Icc 1 K, F i * w ^ i) =
       ∑ i : Fin K, F (i.val + 1) * w ^ (i.val + 1) := by
-    rw [Fin.sum_univ_eq_sum_range]
+    rw [Fin.sum_univ_eq_sum_range (fun i => F (i + 1) * w ^ (i + 1)) K]
     exact (range_succ_sum_Icc K (fun i => F i * w ^ i)).symm
   have hpow (k : ℕ) :
       (∑ i ∈ Icc 1 K, F i * w ^ i) ^ k / (k.factorial : ℝ) =
