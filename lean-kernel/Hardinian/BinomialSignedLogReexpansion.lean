@@ -113,10 +113,14 @@ theorem binomialSharpShift_geometry (N L a b j : ℕ)
     linarith only [hmcast]
   have hjR : (j : ℝ) = (N : ℝ) + (t - s / 2) := by
     dsimp only [t]
-    linarith only [hmR]
+    simp only [hmR]
+    ring
   have hqR : (q : ℝ) = (N : ℝ) + (-t - s / 2) := by
+    change ((m - j : ℕ) : ℝ) = (N : ℝ) + (-t - s / 2)
+    rw [Nat.cast_sub hjm.le]
     dsimp only [t]
-    linarith only [hmR, hqcast]
+    simp only [hmR]
+    ring
   have hs0 : 0 ≤ s := by dsimp only [s]; positivity
   have hsL : s ≤ 2 * (L : ℝ) := by
     dsimp only [s]
@@ -175,11 +179,17 @@ theorem binomialSharpShift_reciprocal_bounds (N L a b j K r : ℕ)
   have hn : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
   have hLhalf : (L : ℝ) ≤ (N : ℝ) / 2 := by linarith only [hhalf]
   have hhj : |t - s / 2| ≤ (L : ℝ) := by
-    have he : t - s / 2 = (j : ℝ) - (N : ℝ) := by linarith only [hjR]
+    have he : t - s / 2 = (j : ℝ) - (N : ℝ) := by
+      calc
+        _ = ((N : ℝ) + (t - s / 2)) - (N : ℝ) := by ring
+        _ = _ := by rw [← hjR]
     rw [he]
     exact hdj
   have hhq : |-t - s / 2| ≤ (L : ℝ) := by
-    have he : -t - s / 2 = (q : ℝ) - (N : ℝ) := by linarith only [hqR]
+    have he : -t - s / 2 = (q : ℝ) - (N : ℝ) := by
+      calc
+        _ = ((N : ℝ) + (-t - s / 2)) - (N : ℝ) := by ring
+        _ = _ := by rw [← hqR]
     rw [he]
     exact hdq
   have bm := shiftedReciprocalPrefix_doubled_shift_bound K r (N : ℝ) (L : ℝ) s
