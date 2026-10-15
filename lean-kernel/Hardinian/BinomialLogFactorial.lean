@@ -143,8 +143,7 @@ theorem binomialLog_reciprocal_window_bound (N q J : ℕ) (hN : 1 ≤ N)
       one_div_le_one_div_of_le (pow_pos (by positivity) _)
         (pow_le_pow_left₀ (by positivity) hq (J + 1))
     _ = _ := by
-      simp only [div_pow, one_div, div_eq_mul_inv, mul_inv_rev, inv_inv]
-      norm_num <;> ring
+      rw [div_pow, one_div_div]
 
 theorem uniform_normalizedBinomialLog_prefix_window (C : ℝ) (hC : 0 < C) :
     ∃ N0 : ℕ, 4 ≤ N0 ∧ ∀ N ≥ N0, ∀ L a b j J : ℕ,
