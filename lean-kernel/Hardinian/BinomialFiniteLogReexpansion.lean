@@ -252,12 +252,17 @@ theorem binomialLog_finite_reexpansion_bound (N L a b j K : ℕ)
   let t : ℝ := (j : ℝ) - (m : ℝ) / 2
   let P : ℝ := (1 + (L : ℝ)) ^ (K + 2)
   let D : ℝ := (N : ℝ) ^ (K + 1)
+  change |binomialCommonLogApprox N m j K - binomialReexpandedLogApprox N m j K| ≤
+    (binomialLogReexpansionConstant K : ℝ) * P / D
   obtain ⟨ha, hb, hjpos, hjm, hqpos, hqlo, hqhi, hmR, hjR, hqR, hs0, hsL, htL, hdj, hdq⟩ :=
     binomialSharpShift_geometry N L a b j hN hba haL hhalf hj
   have hn : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
   have hL : (0 : ℝ) ≤ L := Nat.cast_nonneg _
   have ht : |t| ≤ (L : ℝ) := htL.trans (by linarith only [hL])
-  have hs : 2 * (N : ℝ) - (m : ℝ) = s := by linarith only [hmR]
+  have hs : 2 * (N : ℝ) - (m : ℝ) = s := by
+    dsimp only [m, s]
+    rw [hmR]
+    ring
   let em := fun r => 1 / (m : ℝ) ^ r - shiftedReciprocalPrefix K r (2 * (N : ℝ)) (-s)
   let ej := fun r => 1 / (j : ℝ) ^ r - shiftedReciprocalPrefix K r (N : ℝ) (t - s / 2)
   let eq := fun r => 1 / (q : ℝ) ^ r - shiftedReciprocalPrefix K r (N : ℝ) (-t - s / 2)
