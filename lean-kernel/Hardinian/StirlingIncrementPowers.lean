@@ -61,7 +61,7 @@ theorem stirlingIncrementPoly_inv (N K : ℕ) :
   unfold stirlingIncrementPoly
   apply Finset.sum_congr rfl
   intro j hj
-  simp only [one_div, inv_pow, div_eq_mul_inv]
+  simp only [one_div, inv_pow, div_eq_mul_inv, one_mul]
 
 theorem stirlingIncrement_log_identity (N : ℕ) (hN : 1 ≤ N) :
     Real.log (Stirling.stirlingSeq N) - Real.log (Stirling.stirlingSeq (N + 1)) =
@@ -199,7 +199,7 @@ theorem stirlingIncrement_inversePower_error_ge_two (N K : ℕ) (hN : 2 ≤ N) :
   change |(Real.log (Stirling.stirlingSeq N) - Real.log (Stirling.stirlingSeq (N + 1))) -
     stirlingIncrementPoly K (1 / (N : ℝ))| ≤ 3 * (1 / (N : ℝ)) ^ (K + 2) at hb
   rw [stirlingIncrementPoly_inv] at hb
-  simpa only [one_div, inv_pow, div_eq_mul_inv] using hb
+  simpa only [one_div, inv_pow, div_eq_mul_inv, one_mul] using hb
 
 theorem stirlingIncrement_abs_one :
     |Real.log (Stirling.stirlingSeq 1) - Real.log (Stirling.stirlingSeq 2)| ≤ 1 / 24 := by
