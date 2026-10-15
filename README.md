@@ -1,6 +1,10 @@
 # Asymptotics of square Hardinian arrays
 
-Aurantium · v0.2.0 · 14 October 2026
+Aurantium · v0.2.0 manuscripts · Lean supplement updated 15 October 2026
+
+The [Lean supplement](FORMALIZATION.md) now proves the **r=2** asymptotic for the actual original array cardinal on n=k+3>=3, including the exact finite counting/kernel identities and a genuine `IsEquivalent` theorem with `16^n/(324*pi*n)`. Its [actual theorem types](verification/r2_actual_theorem_types.txt), [execution record](verification/r2_execution_summary.json) and trust boundaries are available. The r=3 and all-fixed-r statements below retain their separate written-proof scope.
+
+The historical v0.1.0 and v0.2.0 tags, release records, mathematical manuscripts, code/data, citations and rights are preserved. This default-page supplement is not a new tagged release.
 
 For every integer r>=1 fixed before n tends to infinity, this extension proves
 
@@ -22,4 +26,4 @@ The formal four-page ACM poster *Rectangular Hardinian Arrays* has been read for
 
 This version extends the [public v0.1.0 release](https://github.com/Aurantium-47/hardinian-array-asymptotics/releases/tag/v0.1.0). Its original mathematical manuscript, code and results remain unchanged; its r=2,3 limitations are the historical scope of that volume. The original volume preserves its OEIS A253217 attribution of the r=2 asymptotic conjecture to Vaclav Kotesovec.
 
-No new mathematical computation was performed in preparing this extension. Author-reported data, an earlier separate candidate replay and independently implemented finite checks are distinguished in REPRODUCIBILITY.md. Finite checks do not substitute for the infinite argument. Prepared with AI assistance; no independent human peer review or proof-assistant certification is claimed. Third-party papers are linked, not bundled. WHITELIST.txt gives the payload, and MANIFEST.json/SHA256SUMS.txt identify its bytes.
+No new mathematical computation was performed in preparing this extension. Author-reported data, an earlier separate candidate replay and independently implemented finite checks are distinguished in REPRODUCIBILITY.md. Finite checks do not substitute for the infinite argument. Prepared with AI assistance. The two historical manuscript distributions made no proof-assistant claim; current r=2 machine-checked coverage is described in FORMALIZATION.md. Independent human peer review, independent-kernel verification and formalization of the full fixed-r extension are not claimed. Third-party papers are linked, not bundled. WHITELIST.txt gives the payload, and MANIFEST.json/SHA256SUMS.txt identify its bytes.

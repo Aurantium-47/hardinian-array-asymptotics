@@ -1,4 +1,10 @@
-# Version 0.2.0 scope and dependencies
+# Written scope and current Lean coverage
+
+The current [Lean supplement](FORMALIZATION.md) covers only r=2. For every k:Nat it uses the original `R2Array k` of side n=k+3, with N=k+1 and m=k+2. It proves the actual finite count as the strict W-square sum, the exact weighted-kernel normalization, and asymptotic equivalence to `16^(k+3)/(324*pi*(k+3))`. The finite identities include k0; original n1/2 are not invented by natural subtraction. The r2 counting identity, lattice-path cancellation and inverse correspondences are proved internally. No extra count/LGV/kernel-limit hypothesis is imposed.
+
+The following describes the preserved v0.2.0 written theorem. Its all-fixed-r claim and its explicitly cited external inputs must not be confused with the narrower formal coverage. The old PDFs/TeX remain exact historical volumes.
+
+## Written general-parameter result
 
 The original nonnegative n x n arrays have a(1,1)=0, a(n,n)=n-r-1, |a(i,j)-(max(i,j)-1)|<=r, and every available right/down/down-right step increases the value by 0 or 1. The extension proves the Gamma-product asymptotic for **each fixed integer r>=1 as n tends to infinity**. H_0(n,n)=1; H_1(n,n)=(4^(n-1)-1)/3; n<=r has count zero.
 

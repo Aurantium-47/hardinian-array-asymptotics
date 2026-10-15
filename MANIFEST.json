@@ -1,5 +1,5 @@
 {
-  "title": "Diagonal asymptotics of square Hardinian arrays: every fixed parameter",
+  "title": "Square Hardinian arrays: fixed-parameter manuscripts and r2 Lean supplement",
   "version": "0.2.0",
   "hash_algorithm": "SHA-256",
   "self_excluded": true,
@@ -9,19 +9,59 @@
   ],
   "files": [
     {
+      "path": ".github/workflows/hardinian-array-determinant.yml",
+      "bytes": 87733,
+      "sha256": "06d752194fad39f3b030d4b5954c7f5eeadcb4feb2c51c9fbf1232d2d9d38a4a"
+    },
+    {
+      "path": ".github/workflows/hardinian-endpoint-fibers.yml",
+      "bytes": 42352,
+      "sha256": "fb94774bfa8212a0458e9211c1558b50c2d9ea8c38ad337518e9b994a5fdd6e4"
+    },
+    {
+      "path": ".github/workflows/hardinian-endpoint-omissions.yml",
+      "bytes": 51246,
+      "sha256": "3be523db6388683b38e676d17daddcfbef38cf44d2e4b3f1ed3666c76f98f593"
+    },
+    {
+      "path": ".github/workflows/hardinian-kernel-spine.yml",
+      "bytes": 23778,
+      "sha256": "46b4a2df2fbefeb49073a1b0372117d707f220c8f2ceef10ed6adfe9e329f04d"
+    },
+    {
+      "path": ".github/workflows/hardinian-path-family.yml",
+      "bytes": 36908,
+      "sha256": "8bdec7ff930bdf89835e77ab8d753e49dd834140a0db7241fd20f5928f356e3b"
+    },
+    {
+      "path": ".github/workflows/hardinian-path-separation.yml",
+      "bytes": 25209,
+      "sha256": "dd6c73d33aa820e2cd59cccf40b63c6260c143e93864ced2b55e34efdcd4b555"
+    },
+    {
+      "path": ".github/workflows/hardinian-r2-final-assembly.yml",
+      "bytes": 116919,
+      "sha256": "49ea2f4bc8d190b069d180f7868a56d553336b25aba0497852cfb732d1a0efe2"
+    },
+    {
       "path": "AI_USAGE.md",
-      "bytes": 667,
-      "sha256": "d85ef90c62dd44f3a220820ff7df00a350992d7357370e5c1ef5eb714b5bbacf"
+      "bytes": 1003,
+      "sha256": "4075b53954efe415e4020e6fc9cbdc54895d8cd940fd43c53bbf5f9d1e956ba1"
+    },
+    {
+      "path": "FORMALIZATION.md",
+      "bytes": 7110,
+      "sha256": "be9f94ffee5dba11452038b78029093ef529dcf626929a9e0e9b84dce6604c37"
     },
     {
       "path": "README.md",
-      "bytes": 2481,
-      "sha256": "9296ad5031c016de8083251518d01c4a13cdb6fdbec461ecac100288358a3604"
+      "bytes": 3392,
+      "sha256": "36e9302eafefaf2c355cb15f1a66626d3fb84556bba52bafa094b55cc81bbf92"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 1358,
-      "sha256": "bf1810edca376860db76ebac7e9c301d083fa89a374371101bc8cf2d932a66ef"
+      "bytes": 2120,
+      "sha256": "401f0c86d8eeeb642f9969a1593c364560197f9e592b4e50b957fe7387605896"
     },
     {
       "path": "REFERENCES.md",
@@ -30,8 +70,8 @@
     },
     {
       "path": "REPRODUCIBILITY.md",
-      "bytes": 4306,
-      "sha256": "02f28204cb7abdd82b2fb7af5b40709a72da423f4705a29acd3eddbbaa915680"
+      "bytes": 6825,
+      "sha256": "38e6a248467d964dcf6558424dbe59e341b82d11eeacaeb35b032762741ff38d"
     },
     {
       "path": "RIGHTS.md",
@@ -40,18 +80,18 @@
     },
     {
       "path": "SCOPE.md",
-      "bytes": 1799,
-      "sha256": "9aff516b87c378938cbcc6c38db33add610771731675d212224b8b50bd21846b"
+      "bytes": 2630,
+      "sha256": "c96c35db082ece92916b0cfbd87bb458e43cd713fc752347176d4f4218141fa3"
     },
     {
       "path": "SHA256SUMS.txt",
-      "bytes": 1136,
-      "sha256": "5e87602f2c54b1627a8599a1df4021cb6775edd1f203e14843ae580b22c53903"
+      "bytes": 6968,
+      "sha256": "cffcca84d5740541b9955b2deff8dea432a764c65afc9bb529b2d87d69f161de"
     },
     {
       "path": "WHITELIST.txt",
-      "bytes": 241,
-      "sha256": "0a2f0cc8d299558070b25813a27dd898e32b9642cd5681093c9674ab2fb83294"
+      "bytes": 2575,
+      "sha256": "dd386b89bd57d59d949b7ebeff765adb83c1b6875972b81bbeea71019c7af9f4"
     },
     {
       "path": "extensions/paper/proof.pdf",
@@ -74,6 +114,221 @@
       "sha256": "ad6c3e1dc81956cff930fcaf405e6b47be64a9e49c4b0e7c5b3ef7821a41929d"
     },
     {
+      "path": "lean-kernel/Hardinian/ArrayDeterminantAssembly.lean",
+      "bytes": 4116,
+      "sha256": "11c063888090aebf43b8656c76960d2f7051f0523275c91d48d19d0ee7d2c8ab"
+    },
+    {
+      "path": "lean-kernel/Hardinian/ArrayEncoding.lean",
+      "bytes": 6918,
+      "sha256": "18adbb685d35c9f37b4e1e411107d525073c85b03676192dda6377426da6e4e0"
+    },
+    {
+      "path": "lean-kernel/Hardinian/BinomialMass.lean",
+      "bytes": 3248,
+      "sha256": "fdd93513358abc6fa8c171232379ca22f121fb4065fb3529add61b3d389df34e"
+    },
+    {
+      "path": "lean-kernel/Hardinian/CanonicalBadFamilySwap.lean",
+      "bytes": 14276,
+      "sha256": "a81f4211218e46622c3b5436f035198e53a9391646aa5670cede33ad20e51d63"
+    },
+    {
+      "path": "lean-kernel/Hardinian/CentralMassLimit.lean",
+      "bytes": 3851,
+      "sha256": "a3bdb565c1de4520b77f2c36d743044fdba2288d401339c14d721cfa1f318607"
+    },
+    {
+      "path": "lean-kernel/Hardinian/CentralMassWallis.lean",
+      "bytes": 3276,
+      "sha256": "642c4c29e14a8bac33596183d9bbf26fbac5c728f2ee13258809650a64a9002b"
+    },
+    {
+      "path": "lean-kernel/Hardinian/ComplementaryJacobiTwo.lean",
+      "bytes": 8125,
+      "sha256": "0026a801d9300e37041ebe6cd8d8459ddd0803947e751cc5d8b86d9f822f7c23"
+    },
+    {
+      "path": "lean-kernel/Hardinian/ComplementaryMinorTwo.lean",
+      "bytes": 7681,
+      "sha256": "019822fb3edf7fbd95b1afc7e9bd963d0b7f8f0a5d78325309e1388bac94544d"
+    },
+    {
+      "path": "lean-kernel/Hardinian/CutBoundary.lean",
+      "bytes": 8197,
+      "sha256": "210c78424ed51873b5ad7a314cf809fc36e30cb4af33106d3abc4dea14dd1bc3"
+    },
+    {
+      "path": "lean-kernel/Hardinian/CutPathCore.lean",
+      "bytes": 9260,
+      "sha256": "5c7c641b0a56491189142b1c08ff0de0ebcee2c5a52813bb4936067c20b38e4f"
+    },
+    {
+      "path": "lean-kernel/Hardinian/EndpointFibers.lean",
+      "bytes": 7241,
+      "sha256": "f7a7a6c2c604a9f0a45dc03621f6a4b2281b980a5bd4b4b2e0a8d828ebb245dc"
+    },
+    {
+      "path": "lean-kernel/Hardinian/EndpointOmissions.lean",
+      "bytes": 5693,
+      "sha256": "75bfa44db4ed09305faf7f005574586dc704d96cafcf38cc968189688bbe4a0d"
+    },
+    {
+      "path": "lean-kernel/Hardinian/FiniteKernelScaling.lean",
+      "bytes": 5902,
+      "sha256": "ea80e53a050b3ed946c3b1d8473ea0c216c8880b9255899afa31a92660985a1e"
+    },
+    {
+      "path": "lean-kernel/Hardinian/GridPathCount.lean",
+      "bytes": 7849,
+      "sha256": "b44b4508da237079847f715881d2dd7df374146acf67c17597a5d74e0cd0c055"
+    },
+    {
+      "path": "lean-kernel/Hardinian/GridPathSeparation.lean",
+      "bytes": 4765,
+      "sha256": "30c4066726d29d9067dae81121c327da0c34eed77f9055a3e738dd025539cda4"
+    },
+    {
+      "path": "lean-kernel/Hardinian/GridPathSplice.lean",
+      "bytes": 10663,
+      "sha256": "30d71670fdfdafa191c3f578816b6fca01becb0083a63f3e4b86361036515e81"
+    },
+    {
+      "path": "lean-kernel/Hardinian/IntervalKernel.lean",
+      "bytes": 4686,
+      "sha256": "9d61688ae12ee265af3c961f1882275a9b053bab1079643462d7ad90e8cc32a0"
+    },
+    {
+      "path": "lean-kernel/Hardinian/KernelError.lean",
+      "bytes": 3961,
+      "sha256": "a4e11f5c23f734204703c23a21c0cb44c95544e5808653a73a67ae662e5edf4f"
+    },
+    {
+      "path": "lean-kernel/Hardinian/KernelGlobalDomination.lean",
+      "bytes": 5563,
+      "sha256": "29642920e865d53557b441467b48cc5c766044212b86cfcdaca37df6dd2b173f"
+    },
+    {
+      "path": "lean-kernel/Hardinian/KernelWeightedLimit.lean",
+      "bytes": 7245,
+      "sha256": "8297f08bd66cf3850e5cb888d07070b2ce308b7eea46d61dc45f3b589fa73430"
+    },
+    {
+      "path": "lean-kernel/Hardinian/LogWindowRelative.lean",
+      "bytes": 3597,
+      "sha256": "29776872edda2527d8ff9cbd42607834c4509199c026b510b67b9346abaee62e"
+    },
+    {
+      "path": "lean-kernel/Hardinian/MarkedPathFamilySwap.lean",
+      "bytes": 15773,
+      "sha256": "b8338a3437fe8bf426a07b4ec2463ef4de918e1d3132e934a11b8487c68c4be1"
+    },
+    {
+      "path": "lean-kernel/Hardinian/NonintersectingSignedFamily.lean",
+      "bytes": 7805,
+      "sha256": "aec7bdbace3f7e7a2066736faf614990bdfae48f978c90c46fb1333173dc477d"
+    },
+    {
+      "path": "lean-kernel/Hardinian/NormalizedKernel.lean",
+      "bytes": 2404,
+      "sha256": "46d7674cfad068df50adb496bb99f59a6fa115cb526fbef3083238498ac2c94e"
+    },
+    {
+      "path": "lean-kernel/Hardinian/PascalBinetSquare.lean",
+      "bytes": 4986,
+      "sha256": "a9fb33b783c892588d274b8da61992d4c61e16b770090e76d1d482cd34583a25"
+    },
+    {
+      "path": "lean-kernel/Hardinian/PascalComplementaryMinor.lean",
+      "bytes": 1637,
+      "sha256": "cda542b78ad9ab405fc71889d96b788971092de6b862e58c8ae3470e9c0e109b"
+    },
+    {
+      "path": "lean-kernel/Hardinian/PascalConvolution.lean",
+      "bytes": 5599,
+      "sha256": "eee1622abe0ff8f33b1cb91c5394132e0e014a31e00622e5b4594a66260a6b3c"
+    },
+    {
+      "path": "lean-kernel/Hardinian/PascalIntervalConvolution.lean",
+      "bytes": 6157,
+      "sha256": "fea00c069073e69c6f8426cedc3d91ebf832a41bb1b31a787a19ed8b66d8fe0d"
+    },
+    {
+      "path": "lean-kernel/Hardinian/PascalKernelCast.lean",
+      "bytes": 1805,
+      "sha256": "0eb15fd6348f8331edb84195a31be8b10f018ac3c265bab056e6df450468c766"
+    },
+    {
+      "path": "lean-kernel/Hardinian/PascalMatrices.lean",
+      "bytes": 4682,
+      "sha256": "ffc8fe52640c2a3bb22a4dcda85f10a5c28106d7de1013c9242e614d08e5bbc8"
+    },
+    {
+      "path": "lean-kernel/Hardinian/PascalWInterval.lean",
+      "bytes": 5131,
+      "sha256": "c7ecd42aed4d9ef9d2aee0698b271baf4d21525c0ee97909ed475056d3b05bb5"
+    },
+    {
+      "path": "lean-kernel/Hardinian/R2Asymptotic.lean",
+      "bytes": 2703,
+      "sha256": "8e27ac341521c8a01139c37a4901726f88eee41c423c04ff66ee9a06e91cbf21"
+    },
+    {
+      "path": "lean-kernel/Hardinian/R2FiniteAssembly.lean",
+      "bytes": 1802,
+      "sha256": "49d21383140248e0e2c66407ff8adfa582f106384d8fd32f029d8296c7f5a55c"
+    },
+    {
+      "path": "lean-kernel/Hardinian/RectangularBinetTwo.lean",
+      "bytes": 4128,
+      "sha256": "9ef6ddd6109174e72b28eea71fa3bf9ad56dece94160327d80189d51352e8e43"
+    },
+    {
+      "path": "lean-kernel/Hardinian/SeparatedCuts.lean",
+      "bytes": 8417,
+      "sha256": "0bb10b23c4d97205c2802db99a75874dbd6c7fa7a4baa070062b227e9c4767e5"
+    },
+    {
+      "path": "lean-kernel/Hardinian/SeparatedPathFamily.lean",
+      "bytes": 5674,
+      "sha256": "a836246270fb33f69214596ef57cfeb3cb931f845e423e4741d9d0764c62252e"
+    },
+    {
+      "path": "lean-kernel/Hardinian/SignedCancellationLGV.lean",
+      "bytes": 4439,
+      "sha256": "bc7673f04b914d0e0476d158a38db477882a852cc954ce4848b1da7aa0a2da00"
+    },
+    {
+      "path": "lean-kernel/Hardinian/SignedPathFamilyExpansion.lean",
+      "bytes": 4621,
+      "sha256": "f5ab8d9f1e0650a9f3672572799dbc646febf9531d0cecb27755d138010c71eb"
+    },
+    {
+      "path": "lean-kernel/Hardinian/TwoSetOrdered.lean",
+      "bytes": 2636,
+      "sha256": "f18cd4bd727260d7917ecbad1bbcf2e1e99014e55d645c3fc65f263fe7bbd852"
+    },
+    {
+      "path": "lean-kernel/Hardinian/UniformCentralScaling.lean",
+      "bytes": 6148,
+      "sha256": "67986452b742042864337b31aaca46da963fa23c085d70962c377812b6781894"
+    },
+    {
+      "path": "lean-kernel/lake-manifest.json",
+      "bytes": 3639,
+      "sha256": "e92da7f1c0b34814a1dd9612b7e7acd5975f160e684aa083155a90f508f0c399"
+    },
+    {
+      "path": "lean-kernel/lakefile.toml",
+      "bytes": 325,
+      "sha256": "0cc96780cc0c6d8becc99ab339c8aefa57035cf12e09f80c18b4d0c977eeb6ab"
+    },
+    {
+      "path": "lean-kernel/lean-toolchain",
+      "bytes": 26,
+      "sha256": "f28855f24b5253d7e8949f38027066a06cdde238520086d421ba7ad24c27a691"
+    },
+    {
       "path": "main.pdf",
       "bytes": 338401,
       "sha256": "b323ddd9482e3e8df3d2fba42c168b6929db28a4e7ed7d0e37cd70762a54b11f"
@@ -82,6 +337,19 @@
       "path": "main.tex",
       "bytes": 12862,
       "sha256": "3f56b2306d89e0f2ea9d0394fdb6261d2f39a2bed1f198cea187966c1022af1a"
+    },
+    {
+      "path": "verification/r2_actual_theorem_types.txt",
+      "bytes": 15747,
+      "sha256": "5ab59ae431e0f554879aec894f2f63aca99ea9c238038394aa5cfcf939fce0ad"
+    },
+    {
+      "path": "verification/r2_execution_summary.json",
+      "bytes": 15927,
+      "sha256": "70118e97c2cc521b446451e2a8169aacceabe2901059ef36d99b8bba6e561eb4"
     }
-  ]
+  ],
+  "distribution_revision": "r2-formalization-2026-10-15",
+  "tagged_release_version_retained": "0.2.0",
+  "mathematical_source_commit": "94eb6714f159dba5d0c3cdb1ea2237da4e9c3a1b"
 }

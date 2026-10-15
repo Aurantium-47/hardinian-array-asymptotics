@@ -4,7 +4,7 @@ The general proof is symbolic. It includes arbitrary fixed-order local expansion
 
 ## Distinct existing records
 
-The records below are historical. Preparing this extension involved no new mathematical execution.
+The records below describe the historical manuscript preparations. Preparing the written v0.2.0 extension involved no new mathematical execution. The subsequent r2 Lean run is reported separately below; the current documentation update does not repeat it.
 
 | Record | Evidence and limits |
 |---|---|
@@ -25,4 +25,14 @@ The original `hardinian.py` and `hardinian_results.json` remain unchanged from v
 
 With the standard LaTeX packages already installed, run `pdflatex proof.tex` twice from `extensions/paper/` to resolve references. The source is standalone, with no external figures, bibliography program or third-party PDF. No mathematical computation is part of the build. A rebuild can change PDF metadata/font encoding; the manifest identifies the supplied bytes. Original main.tex/main.pdf were not rebuilt.
 
-The proof's trust basis is its explicit combinatorial source, standard analytic results and conventional mathematical reasoning. No proof-assistant certificate, independent human peer review or worldwide-priority certification is asserted.
+The two written manuscripts rely on their explicit combinatorial sources, stated analytic results and conventional mathematical reasoning. Their original distributions did not claim proof-assistant certification. The subsequent r2 supplement has the following narrower execution record.
+
+## Checked r=2 Lean supplement
+
+The exact mathematical commit is `94eb6714f159dba5d0c3cdb1ea2237da4e9c3a1b`. Run `38716485093`, job `116360310721`, compiled all 40 actual project dependencies freshly, checked 567 complete type/axiom pairs and 167 complete definition/interface printouts, and completed 129 guarded commands with exit0 and final assertions. Only the standard three axioms occurred. The recorded setup/compilation/audit interval was 198.334219412 seconds; peak sampled process-group RSS was 2593619968 bytes and sampled group swap was zero. These sampled process measurements are not total host memory or a performance guarantee. The 25 tactic-style warnings were retained; there were no Lean errors or resource aborts.
+
+The corresponding workflow fixes Lean4.19.0, mathlibc44 and nine dependencies. Its free public Ubuntu24 runner requires at least14GiB total/12GiB available memory at start and8GiB available before each guarded command. It stops at group RSS6GiB, group swap512MiB, system available2GiB,180seconds per ordinary command/module,1200seconds total including setup, or the40minute job limit. The existing cache command has its separate900second cap within that total. `Elab.async=false` and one thread are retained. A fresh reproduction is a new execution and must not be inferred from reading hashes or the saved status.
+
+The [exact workflow](.github/workflows/hardinian-r2-final-assembly.yml), [theorem extract](verification/r2_actual_theorem_types.txt) and [machine-readable execution summary](verification/r2_execution_summary.json) provide the source and audit bindings. Fixed precompiled external caches, the official binary and the same Lean kernel remain trusted. The two documented Cache/Requests.lean cleanup substitutions are not modifications to mathematical library proof sources. There was no full dependency-source rebuild or independent-kernel replay. FORMALIZATION.md records the exact 32-byte received-log formatting correction and its match to the original audit-command hash.
+
+The r2 formal chain does not certify r3, the all-fixed-r result or publication priority. No independent human peer review is claimed. The current explanation update did not rerun Lean or mathematics, recompile either PDF, regenerate a ZIP, or change any mathematical source/workflow byte.
