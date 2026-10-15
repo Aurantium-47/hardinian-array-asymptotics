@@ -118,8 +118,8 @@ theorem binomialSharpShift_geometry (N L a b j : ℕ)
   have hqR : (q : ℝ) = (N : ℝ) + (-t - s / 2) := by
     change ((m - j : ℕ) : ℝ) = (N : ℝ) + (-t - s / 2)
     rw [Nat.cast_sub hjm.le]
-    dsimp only [t]
-    simp only [hmR]
+    dsimp only [t, m, s]
+    simp only [hmcast]
     ring
   have hs0 : 0 ≤ s := by dsimp only [s]; positivity
   have hsL : s ≤ 2 * (L : ℝ) := by
