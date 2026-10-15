@@ -56,7 +56,7 @@ theorem negativeBinomial_signed_remainder_bound (p M : ℕ) (x : ℝ)
   have hd := negativeBinomial_signed_denominator_bounds p x hx
   have hpos : 0 < 1 + x := by have := (abs_le.mp hx).1; linarith
   rw [negativeBinomial_remainder_identity p M x hpos.ne']
-  simp only [abs_div, abs_mul, abs_neg_one_pow, one_mul, abs_pow,
+  simp only [abs_div, abs_mul, abs_neg_one_pow, one_mul, abs_pow, abs_neg, abs_one, one_pow,
     abs_of_nonneg hpos.le, abs_of_nonneg hr.1]
   calc
     _ = (|x| ^ (M + 1) * negativeBinomialNumerator p M x) *
@@ -78,7 +78,8 @@ theorem negativeBinomialPrefix_signed_scale (p M : ℕ) (A h : ℝ) (hA : 0 < A)
   apply Finset.sum_congr rfl
   intro j hj
   rw [div_pow, show p + j + 1 = (p + 1) + j by omega, pow_add]
-  field_simp [hA.ne'] <;> ring
+  simp only [one_div, div_eq_mul_inv, mul_inv_rev]
+  ring
 
 theorem signedShift_domain (A h : ℝ) (hA : 0 < A) (hh : |h| ≤ A / 2) :
     |h / A| ≤ (1 / 2 : ℝ) ∧ 0 < A + h := by
