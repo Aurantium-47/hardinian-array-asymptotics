@@ -144,7 +144,7 @@ theorem binomialLog_reciprocal_window_bound (N q J : ℕ) (hN : 1 ≤ N)
         (pow_le_pow_left₀ (by positivity) hq (J + 1))
     _ = _ := by
       simp only [div_pow, one_div, div_eq_mul_inv, mul_inv_rev, inv_inv]
-      ring
+      norm_num <;> ring
 
 theorem uniform_normalizedBinomialLog_prefix_window (C : ℝ) (hC : 0 < C) :
     ∃ N0 : ℕ, 4 ≤ N0 ∧ ∀ N ≥ N0, ∀ L a b j J : ℕ,
