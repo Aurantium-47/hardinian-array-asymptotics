@@ -47,13 +47,15 @@ theorem range_succ_sum_Icc (K : ℕ) (f : ℕ → ℝ) :
     simp only [mem_range, mem_Icc] at hi ⊢
     omega
   · intro i hi j hj h
+    dsimp only at h
     omega
   · intro n hn
     simp only [mem_Icc] at hn
     refine ⟨n - 1, ?_, ?_⟩
     · simp only [mem_range]
       omega
-    · omega
+    · change n - 1 + 1 = n
+      omega
   · intro i hi
     rfl
 
@@ -165,7 +167,7 @@ theorem binomialYLog_scalar_collection (K : ℕ) (N s : ℝ) (hN : 0 < N) :
       rw [sum_div]
       simp only [Nat.cast_add, Nat.cast_one]
     _ = ∑ n ∈ Icc 1 K, ((s / (2 * N)) ^ n / (n : ℝ)) / 2 :=
-      range_succ_sum_Icc K _
+      range_succ_sum_Icc K (fun n => ((s / (2 * N)) ^ n / (n : ℝ)) / 2)
     _ = _ := by
       apply sum_congr rfl
       intro n hn
@@ -173,6 +175,7 @@ theorem binomialYLog_scalar_collection (K : ℕ) (N s : ℝ) (hN : 0 < N) :
       rw [div_pow, mul_pow, pow_succ]
       field_simp [hN.ne', hn0]
       <;> ring
+      <;> simp
 
 theorem binomialEntropy_scalar_collection (K : ℕ) (N s t : ℝ) (hN : 0 < N) :
     (∑ i ∈ range ((K + 1) / 2),
