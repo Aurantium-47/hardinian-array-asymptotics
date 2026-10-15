@@ -64,9 +64,15 @@ theorem binomialPositiveCompositions_zero_zero :
 theorem binomialPositiveCompositions_zero_length (n : ℕ) (hn : 0 < n) :
     binomialPositiveCompositions n 0 = ∅ := by
   classical
-  ext v
-  simp [binomialPositiveCompositions, binomialCompositionOrder, Nat.ne_of_gt hn,
-    (by omega : (0 : ℕ) ≠ n)]
+  apply eq_empty_iff_forall_not_mem.mpr
+  intro v hv
+  have he : binomialCompositionOrder v = n := (mem_filter.mp hv).2
+  have hz : binomialCompositionOrder v = 0 := by
+    unfold binomialCompositionOrder
+    apply sum_eq_zero
+    intro i hi
+    exact Fin.elim0 i
+  omega
 
 theorem binomialPositiveCompositions_diagonal (n : ℕ) (hn : 0 < n) :
     binomialPositiveCompositions n n = {fun _ => (⟨0, hn⟩ : Fin n)} := by
