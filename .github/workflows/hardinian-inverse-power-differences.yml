@@ -100,7 +100,7 @@ jobs:
               return text
           
           baseline = '4448e5acf7e92fbb2a336a196e175257f958718b'
-          expected = {'lean-kernel/Hardinian/InversePowerDifferences.lean': 'd5906e904aef2201d23aa6f9f9ac43f65a01112f3adcab4881f6b544002fee5b'}
+          expected = {'lean-kernel/Hardinian/InversePowerDifferences.lean': 'fd2859cd7de732cbb9d9cf2ca3bf7e977927576793c49416b88371dc4f818287'}
           own = ['Hardinian.InversePowerDifferences']
           expected_names = ['Hardinian.negativeBinomialPrefix', 'Hardinian.negativeBinomialNumerator', 'Hardinian.inversePowerDifferenceCoeff', 'Hardinian.inversePowerDifferenceCoeff_cast', 'Hardinian.inversePowerDifferenceCoeff_zero', 'Hardinian.negativeBinomial_edge_coeff', 'Hardinian.negativeBinomialPrefix_succ', 'Hardinian.negativeBinomialNumerator_succ', 'Hardinian.negativeBinomialNumerator_relation', 'Hardinian.negativeBinomial_finite_identity', 'Hardinian.negativeBinomial_hockey_stick', 'Hardinian.negativeBinomialNumerator_bounds', 'Hardinian.negativeBinomial_remainder_identity', 'Hardinian.negativeBinomial_remainder_bound', 'Hardinian.inversePowerDifference_prefix', 'Hardinian.inversePowerDifference_prefix_scaled', 'Hardinian.inversePower_shift_identity', 'Hardinian.inversePowerDifference_error']
           workflow = '.github/workflows/hardinian-inverse-power-differences.yml'

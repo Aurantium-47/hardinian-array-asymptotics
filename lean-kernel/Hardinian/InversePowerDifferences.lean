@@ -62,6 +62,7 @@ theorem negativeBinomialNumerator_relation (p M : ℕ) (x : ℝ) :
               x * (Nat.choose (M + p + 2) (p + 1) : ℝ)) * (1 + x) ^ (p + 1) := by ring
         _ = _ := by
           rw [ih, pow_succ (1 + x) (p + 1)]
+          simp only [Nat.add_assoc] at hc ⊢
           simp only [hc]
           ring
 
@@ -166,7 +167,7 @@ theorem inversePowerDifference_prefix (p M : ℕ) (x : ℝ) :
         (-1 : ℝ) ^ (j + 1) * (Nat.choose (p + j + 1) (j + 1) : ℝ) * x ^ (j + 1)) + 1 := by
     unfold negativeBinomialPrefix
     rw [Finset.sum_range_succ']
-    simp
+    simp [Nat.add_assoc]
   rw [hP]
   calc
     _ = ∑ j ∈ Finset.range M,
