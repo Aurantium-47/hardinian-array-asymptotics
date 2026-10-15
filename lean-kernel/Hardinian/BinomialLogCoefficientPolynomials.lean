@@ -59,7 +59,7 @@ theorem binomialLogCoeff_reflect (n : ℕ) :
   · simp only [binomialLogCoeff, if_neg hn, map_add, map_sub, map_sum, map_mul, map_pow,
       eval₂Hom_C, eval₂Hom_X', if_pos (rfl : (0 : Fin 2) = 0),
       if_neg (by decide : (1 : Fin 2) ≠ 0)]
-    simp only [heven, sub_neg_eq_add, add_neg_eq_sub]
+    simp only [heven, sub_neg_eq_add, ← sub_eq_add_neg, if_pos True.intro]
     congr 1
     apply sum_congr rfl
     intro i hi
@@ -68,7 +68,8 @@ theorem binomialLogCoeff_reflect (n : ℕ) :
 theorem binomialPoly_degree_neg (p : MvPolynomial (Fin 2) ℚ) :
     (-p).totalDegree ≤ p.totalDegree := by
   have h := totalDegree_mul (C (-1 : ℚ)) p
-  simpa only [map_neg, map_one, neg_one_mul, totalDegree_C, zero_add] using h
+  rw [totalDegree_C, zero_add] at h
+  simpa only [map_neg, map_one, neg_one_mul] using h
 
 theorem binomialPoly_degree_sub (p q : MvPolynomial (Fin 2) ℚ) :
     (p - q).totalDegree ≤ max p.totalDegree q.totalDegree := by
