@@ -211,7 +211,8 @@ jobs:
               assert sha(path) == expected['contributions/half-grid-algebra/' + name + '.lean']
               imports = run([lean, '--deps', str(path)], name + '-imports', 60)
               deps = [pathlib.Path(line.strip()).resolve() for line in imports.splitlines() if line.strip()]
-              expected_aggregator = (libraries[0] / 'HardinianHandoff.olean').resolve()
+              expected_audit_module = {'Audit': 'HardinianHandoff', 'AuditAlternating': 'HardinianHandoff.DegreeCancellation'}[name]
+              expected_aggregator = (libraries[0] / (expected_audit_module.replace('.', '/') + '.olean')).resolve()
               assert deps.count(expected_aggregator) == 1
               assert [p for p in deps if p.is_relative_to(libraries[0].resolve())] == [expected_aggregator]
               for dep in deps:
