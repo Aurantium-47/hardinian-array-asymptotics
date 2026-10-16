@@ -32,7 +32,7 @@ theorem binomialLogCoeffMajorant_nonneg (i : ℕ) : 0 ≤ binomialLogCoeffMajora
 theorem binomialLogCoeffMajorant_cast (i : ℕ) :
     (binomialLogCoeffMajorant i : ℝ) =
       (2 : ℝ) ^ (i + 1) * ∑ d ∈ (binomialLogCoeff i).support,
-        |(MvPolynomial.coeff d (binomialLogCoeff i) : ℝ)| := by
+        |((MvPolynomial.coeff d (binomialLogCoeff i) : ℚ) : ℝ)| := by
   norm_num [binomialLogCoeffMajorant]
 
 theorem binomialLogPrefixMajorant_nonneg (K : ℕ) : 0 ≤ binomialLogPrefixMajorant K := by
@@ -102,10 +102,10 @@ theorem binomialLogCoeff_eval_majorant (i : ℕ) (s t B : ℝ)
   rw [MvPolynomial.eval₂_eq]
   calc
     _ ≤ ∑ d ∈ (binomialLogCoeff i).support,
-        |(MvPolynomial.coeff d (binomialLogCoeff i) : ℝ) * ∏ a ∈ d.support, φ a ^ d a| :=
+        |((MvPolynomial.coeff d (binomialLogCoeff i) : ℚ) : ℝ) * ∏ a ∈ d.support, φ a ^ d a| :=
       abs_sum_le_sum_abs _ _
     _ ≤ ∑ d ∈ (binomialLogCoeff i).support,
-        |(MvPolynomial.coeff d (binomialLogCoeff i) : ℝ)| * (2 * B) ^ (i + 1) := by
+        |((MvPolynomial.coeff d (binomialLogCoeff i) : ℚ) : ℝ)| * (2 * B) ^ (i + 1) := by
       apply sum_le_sum
       intro d hd
       rw [abs_mul, abs_prod]
@@ -186,7 +186,7 @@ theorem binomial_exp_taylor_bound (K : ℕ) (u : ℝ) (hu : |u| ≤ 1) :
   have hnR : (0 : ℝ) < n := by exact_mod_cast hn
   have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast (show 1 ≤ n by omega)
   have hfac : (0 : ℝ) < (n.factorial : ℝ) := by exact_mod_cast Nat.factorial_pos n
-  have he : (2 : ℝ) ≤ Real.exp 1 := by simpa using Real.add_one_le_exp (1 : ℝ)
+  have he : (2 : ℝ) ≤ Real.exp 1 := by linarith only [Real.add_one_le_exp (1 : ℝ)]
   have hnum : ((n + 1 : ℕ) : ℝ) ≤ Real.exp 1 * (n : ℝ) := by
     have hmul := mul_le_mul_of_nonneg_right he hnR.le
     norm_num only [Nat.cast_add, Nat.cast_one]
@@ -320,7 +320,7 @@ theorem uniform_normalizedBinomialMass_exp_window (C : ℝ) (hC : 0 < C) (K : �
   have hδ : 0 < δ := one_div_pos.mpr hden
   have hδ1 : δ ≤ 1 := by
     apply (div_le_iff₀ hden).mpr
-    linarith
+    linarith only [hA, hD]
   obtain ⟨NL, hNL4, hlog⟩ := uniform_normalizedBinomialLog_coeff_window C hC
   obtain ⟨NG, hNG2, hgeo⟩ := logWindow_eventually_below_half C
   obtain ⟨M, hsmall⟩ := eventually_atTop.mp
@@ -334,7 +334,7 @@ theorem uniform_normalizedBinomialMass_exp_window (C : ℝ) (hC : 0 < C) (K : �
   have hN4 : 4 ≤ N := le_trans hNL4 hNL
   have hN1 : 1 ≤ N := by omega
   have hNr : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
-  have hhalf : 2 * (L : ℝ) < (N : ℝ) := by have := hgeo N hNG; linarith
+  have hhalf : 2 * (L : ℝ) < (N : ℝ) := by linarith only [hgeo N hNG, hL]
   let m := (N - a) + (N - b)
   let s : ℝ := (a : ℝ) + (b : ℝ)
   let t : ℝ := (j : ℝ) - (m : ℝ) / 2
@@ -349,11 +349,11 @@ theorem uniform_normalizedBinomialMass_exp_window (C : ℝ) (hC : 0 < C) (K : �
   have hB : 1 ≤ B := by
     have hL0 : (0 : ℝ) ≤ L := Nat.cast_nonneg L
     dsimp only [B]
-    linarith
-  have hs : |s| ≤ 2 * B := by rw [abs_of_nonneg hs0]; dsimp only [B]; linarith
-  have ht : |t| ≤ 2 * B := by dsimp only [B]; linarith
+    linarith only [hL0]
+  have hs : |s| ≤ 2 * B := by rw [abs_of_nonneg hs0]; dsimp only [B]; linarith only [hsL]
+  have ht : |t| ≤ 2 * B := by dsimp only [B]; linarith only [htL, (show (0 : ℝ) ≤ (L : ℝ) from Nat.cast_nonneg L)]
   have hz0 : 0 ≤ z := div_nonneg (sq_nonneg B) hNr.le
-  have hBup : B ≤ C * Real.log (N : ℝ) + 1 := by dsimp only [B]; linarith
+  have hBup : B ≤ C * Real.log (N : ℝ) + 1 := by dsimp only [B]; linarith only [hL]
   have hsq := pow_le_pow_left₀ (le_trans (by norm_num) hB) hBup 2
   have hzδ : z < δ := by
     have hh := hsmall N hNM
@@ -362,7 +362,7 @@ theorem uniform_normalizedBinomialMass_exp_window (C : ℝ) (hC : 0 < C) (K : �
       div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left hsq (by norm_num)) hNr.le
     have hcomp' : 2 * z ≤ 2 * (C * Real.log (N : ℝ) + 1) ^ 2 / (N : ℝ) := by
       simpa only [z, mul_div_assoc] using hcomp
-    linarith
+    linarith only [hh, hcomp']
   have hz : z ≤ 1 := le_trans hzδ.le hδ1
   have hu : |u| ≤ A * z := binomialLogPrefix_eval_majorant K N hN1 s t B hB hs ht hz
   have herror : |x - u| ≤ D * B ^ (K + 2) / (N : ℝ) ^ (K + 1) := by
@@ -379,13 +379,23 @@ theorem uniform_normalizedBinomialMass_exp_window (C : ℝ) (hC : 0 < C) (K : �
     simpa only [pow_one] using pow_le_pow_of_le_one hz0 hz (show 1 ≤ K + 1 by omega)
   have herrlin : |x - u| ≤ D * z := herrz.trans (mul_le_mul_of_nonneg_left hzp hD)
   have hsmallprod : z * (1 + A + D) < 1 := (lt_div_iff₀ hden).mp hzδ
-  have hu1 : |u| ≤ 1 := by nlinarith [mul_nonneg hD hz0]
+  have hu1 : |u| ≤ 1 := by
+    apply hu.trans
+    calc
+      A * z ≤ A * z + (z + D * z) := le_add_of_nonneg_right (add_nonneg hz0 (mul_nonneg hD hz0))
+      _ = z * (1 + A + D) := by ring
+      _ ≤ 1 := hsmallprod.le
   have hxbound : |x| ≤ D * z + A * z := by
     calc
       _ = |(x - u) + u| := by congr 1; ring
       _ ≤ |x - u| + |u| := abs_add _ _
       _ ≤ _ := add_le_add herrlin hu
-  have hx1 : |x| ≤ 1 := by nlinarith
+  have hx1 : |x| ≤ 1 := by
+    apply hxbound.trans
+    calc
+      D * z + A * z ≤ z + (D * z + A * z) := le_add_of_nonneg_left hz0
+      _ = z * (1 + A + D) := by ring
+      _ ≤ 1 := hsmallprod.le
   have hE1 : |Real.exp x - Real.exp u| ≤ Real.exp 1 * D * z ^ (K + 1) :=
     (binomial_exp_sub_exp_le x u hx1 hu1).trans (by
       simpa only [mul_assoc] using mul_le_mul_of_nonneg_left herrz (Real.exp_pos 1).le)
