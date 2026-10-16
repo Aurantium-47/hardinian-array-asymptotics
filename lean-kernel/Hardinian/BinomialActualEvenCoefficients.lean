@@ -9,7 +9,7 @@ namespace Hardinian
 
 open Finset MvPolynomial
 
-def binomialExpExponent (r e : ℕ) : Fin 2 →₀ ℕ :=
+noncomputable def binomialExpExponent (r e : ℕ) : Fin 2 →₀ ℕ :=
   Finsupp.single (0 : Fin 2) r + Finsupp.single (1 : Fin 2) e
 
 noncomputable def binomialExpEvenCoeff (n : ℕ) (h : Fin (n + 1)) : Polynomial ℚ :=
@@ -48,7 +48,8 @@ theorem binomialExpReflection_monomial (d : Fin 2 →₀ ℕ) (c : ℚ) :
       (monomial d c : MvPolynomial (Fin 2) ℚ) = monomial d (((-1 : ℚ) ^ (d 1)) * c) := by
   rw [binomialExpMonomial_factor, binomialExpMonomial_factor]
   simp only [map_mul, map_pow, eval₂Hom_C, eval₂Hom_X',
-    if_pos (rfl : (0 : Fin 2) = 0), if_neg (by decide : (1 : Fin 2) ≠ 0)]
+    if_pos (rfl : (0 : Fin 2) = 0), if_pos True.intro,
+    if_neg (by decide : (1 : Fin 2) ≠ 0)]
   rw [neg_pow]
   simp only [map_mul, map_pow, map_neg, map_one]
   ring
@@ -125,8 +126,7 @@ theorem binomialExpEvenCoeff_coeff (n : ℕ) (h : Fin (n + 1)) (r : ℕ) :
       apply he
       exact mem_filter.mpr ⟨hs, (binomialExpExponent_apply r (2 * h.val)).2⟩
     have hc : coeff e (binomialExpCoeff n) = 0 := by
-      by_contra hc
-      exact hnot (MvPolynomial.mem_support_iff.mpr hc)
+      simpa only [MvPolynomial.mem_support_iff, not_not] using hnot
     simp [hc]
 
 theorem binomialExpEvenCoeff_zero (h : Fin 1) : binomialExpEvenCoeff 0 h = 1 := by
